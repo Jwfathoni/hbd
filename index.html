@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Happy Birthday Silvia</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         /* === BASE STYLE === */
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -18,18 +18,19 @@
             transition: background 1.5s ease;
         }
 
-        /* Background Gradient Baru (Hidden Initially) */
+        /* Background Gradient Baru */
         body.lights-on {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
 
-        /* === 1. LAMPU (New Assets) === */
+        /* === 1. LAMPU === */
+        /* Z-Index diatur ke 10, nanti pesan akan di atas ini */
         .lights-container {
             position: fixed;
             top: 0; width: 100%;
             display: flex; justify-content: space-around;
             padding: 20px;
-            z-index: 10;
+            z-index: 10; 
             pointer-events: none;
             opacity: 0;
             transition: opacity 1s;
@@ -41,7 +42,6 @@
             position: relative;
             animation: swing 3s ease-in-out infinite;
         }
-        /* Stagger animation */
         .light-bulb:nth-child(2) { animation-delay: 0.5s; }
         .light-bulb:nth-child(3) { animation-delay: 1s; }
         .light-bulb:nth-child(4) { animation-delay: 1.5s; }
@@ -62,7 +62,8 @@
             opacity: 1;
             animation: glow 2s ease-in-out infinite;
         }
-
+        
+        /* Tali Lampu */
         .bulb::before {
             content: ''; position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
             width: 20px; height: 10px; background: #666; border-radius: 5px 5px 0 0;
@@ -78,7 +79,7 @@
             50% { box-shadow: 0 0 30px var(--bulb-color), 0 0 60px var(--bulb-color); }
         }
 
-        /* === 2. BANNER (New Assets) === */
+        /* === 2. BANNER === */
         .banner-container {
             text-align: center;
             margin-top: 130px;
@@ -108,19 +109,7 @@
             color: white; font-size: 1.2rem; margin-top: 5px; font-weight: 300;
         }
 
-        .banner::before, .banner::after {
-            content: '🎈'; position: absolute; font-size: 30px;
-            animation: float 3s ease-in-out infinite;
-        }
-        .banner::before { left: 10px; top: 50%; transform: translateY(-50%); }
-        .banner::after { right: 10px; top: 50%; transform: translateY(-50%); animation-delay: 1.5s; }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(-50%) rotate(-5deg); }
-            50% { transform: translateY(-60%) rotate(5deg); }
-        }
-
-        /* === 3. CAKE (New Assets) === */
+        /* === 3. CAKE === */
         .cake-container {
             display: flex; justify-content: center; align-items: center;
             margin-top: 50px;
@@ -181,7 +170,7 @@
             50% { transform: translateX(-50%) scale(1.1); }
         }
 
-        /* === 4. KONFETI (New Assets) === */
+        /* === 4. KONFETI === */
         .confetti {
             position: fixed; width: 10px; height: 10px;
             background: var(--confetti-color);
@@ -192,32 +181,59 @@
             to { transform: translateY(105vh) rotate(360deg); opacity: 0; }
         }
 
-        /* === 5. LIQUID GLASS MESSAGE (From Previous Code) === */
-        .glass-box {
+        /* === 5. WHITE CARD MESSAGE (REVISI) === */
+        /* Z-Index 50 agar di atas lampu (yang indexnya 10) */
+        .message-card {
             margin: 40px auto 100px;
-            width: 90%; max-width: 600px;
-            padding: 30px;
+            width: 90%; max-width: 500px;
+            padding: 40px;
             border-radius: 20px;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            background: #ffffff; /* Solid White */
+            color: #333333; /* Dark Text */
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
             text-align: center;
-            opacity: 0; transform: translateY(30px);
-            display: none; transition: all 1s ease;
-            color: #fff;
+            opacity: 0; 
+            transform: translateY(30px);
+            display: none; 
+            transition: all 1s ease;
+            position: relative;
+            z-index: 50; /* KUNCI AGAR TIDAK TERTUTUP LAMPU */
         }
-        .glass-box.visible { display: block; animation: floatUp 1s forwards; }
-        @keyframes floatUp { to { opacity: 1; transform: translateY(0); } }
 
-        .message-text p { font-size: 1.1rem; line-height: 1.6; margin-bottom: 10px; color: #fff; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); }
+        .message-card.visible { 
+            display: block; 
+            animation: floatUp 1s forwards; 
+        }
+
+        @keyframes floatUp { 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+
+        .message-text p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            color: #444;
+        }
+        
+        .message-text strong {
+            color: #000;
+            font-size: 1.2rem;
+            display: block;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .message-icons {
+            font-size: 2rem;
+            letter-spacing: 10px;
+        }
 
         /* Photo Slideshow */
         .photo-frame {
             position: relative; width: 100%; height: 300px;
-            overflow: hidden; border-radius: 15px; margin-top: 20px;
-            background: rgba(0,0,0,0.1);
+            overflow: hidden; border-radius: 15px; margin-top: 30px;
+            background: #f0f0f0; /* Light gray background for frame */
         }
         .slide {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -227,17 +243,22 @@
         .slide.active { opacity: 1; transform: translateX(0); }
         .slide.exit { opacity: 0; transform: translateX(-100%); }
         .slide img {
-            max-width: 95%; max-height: 220px;
-            border-radius: 10px; border: 3px solid white;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            max-width: 90%; max-height: 220px;
+            border-radius: 10px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
-        .caption { margin-top: 10px; font-style: italic; font-size: 0.9rem; color: #fff; text-shadow: 1px 1px 2px black; }
+        .caption { 
+            margin-top: 10px; 
+            font-style: italic; 
+            font-size: 0.9rem; 
+            color: #555; 
+        }
 
         /* === CONTROLS === */
         .controls {
             position: fixed; bottom: 20px; left: 0; width: 100%;
             display: flex; justify-content: center; z-index: 100;
-            pointer-events: none; /* Supaya area kosong tembus klik */
+            pointer-events: none;
         }
         
         .btn {
@@ -260,7 +281,7 @@
             .cake-plate { width: 240px; }
             .light-bulb { width: 35px; height: 35px; }
             .bulb { width: 30px; height: 40px; }
-            .glass-box { width: 95%; padding: 20px; }
+            .message-card { width: 95%; padding: 25px; margin-bottom: 80px; }
         }
     </style>
 </head>
@@ -304,31 +325,35 @@
         </div>
     </div>
 
-    <div class="glass-box" id="glassMessage">
+    <div class="message-card" id="messageBox">
         <div class="message-text">
-            <p><strong>Dearest Silvia,</strong></p>
-            <p>Selamat ulang tahun! 🎉</p>
-            <p>Di hari spesial ini, semoga kebahagiaan selalu menyertaimu. Teruslah bersinar seperti bintang dan menjadi inspirasi bagi semua orang.</p>
-            <p><em>May all your wishes come true!</em></p>
-            <p style="margin-top:10px; font-size:0.9rem;">- Joni</p>
+            <p>Today is a special day...</p>
+            <p>A day to celebrate YOU!</p>
+            <p>May this year bring you joy, success, and countless blessings</p>
+            <p>May all your dreams come true</p>
+            <p>And may you always find reasons to smile</p>
+            
+            <strong>Wishing you the happiest birthday ever!</strong>
+            
+            <div class="message-icons">🎂🎈🎁🎉</div>
         </div>
         
         <div class="photo-frame">
             <div class="slide active">
-                <img src="foto/f1.jpg" onerror="this.src='https://via.placeholder.com/300?text=Foto+1'">
-                <div class="caption">Kenangan Indah ✨</div>
+                <img src="foto/f1.jpg" onerror="this.src='https://via.placeholder.com/300?text=Memories'">
+                <div class="caption">Beautiful Memories ✨</div>
             </div>
             <div class="slide">
-                <img src="foto/f2.jpg" onerror="this.src='https://via.placeholder.com/300?text=Foto+2'">
-                <div class="caption">Senyum Manis 😊</div>
+                <img src="foto/f2.jpg" onerror="this.src='https://via.placeholder.com/300?text=Smile'">
+                <div class="caption">Your Beautiful Smile 😊</div>
             </div>
             <div class="slide">
-                <img src="foto/f3.jpg" onerror="this.src='https://via.placeholder.com/300?text=Foto+3'">
-                <div class="caption">Momen Spesial 🎈</div>
+                <img src="foto/f3.jpg" onerror="this.src='https://via.placeholder.com/300?text=Joy'">
+                <div class="caption">Moments of Joy 🎈</div>
             </div>
             <div class="slide">
-                <img src="foto/f4.jpg" onerror="this.src='https://via.placeholder.com/300?text=Foto+4'">
-                <div class="caption">Happy Birthday! 🎂</div>
+                <img src="foto/f4.jpg" onerror="this.src='https://via.placeholder.com/300?text=HBD'">
+                <div class="caption">Special Day 🎂</div>
             </div>
         </div>
     </div>
@@ -348,7 +373,7 @@
 
         function switchBtn(currentId, nextId) {
             const curr = document.getElementById(currentId);
-            curr.style.animation = "none"; // Stop animation
+            curr.style.animation = "none";
             curr.style.opacity = "0";
             setTimeout(() => {
                 curr.style.display = 'none';
@@ -358,10 +383,9 @@
 
         // 1. Lampu & Background
         function action1() {
-            document.body.classList.add('lights-on'); // Background Gradient
-            document.getElementById('lightsContainer').classList.add('visible'); // Show Container
+            document.body.classList.add('lights-on');
+            document.getElementById('lightsContainer').classList.add('visible');
             
-            // Nyalakan lampu satu per satu
             const bulbs = document.querySelectorAll('.bulb');
             bulbs.forEach((b, i) => {
                 setTimeout(() => b.classList.add('on'), i * 200);
@@ -398,14 +422,15 @@
             switchBtn('btn5', 'btn6');
         }
 
-        // 6. Pesan
+        // 6. Pesan (Revisi: Muncul di atas lampu)
         function action6() {
-            const glass = document.getElementById('glassMessage');
-            glass.classList.add('visible');
+            const msgBox = document.getElementById('messageBox');
+            msgBox.classList.add('visible');
             switchBtn('btn6', null);
             
+            // Auto scroll ke pesan
             setTimeout(() => {
-                glass.scrollIntoView({behavior: 'smooth', block: 'center'});
+                msgBox.scrollIntoView({behavior: 'smooth', block: 'center'});
                 startSlideshow();
             }, 500);
         }
