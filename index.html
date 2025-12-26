@@ -507,6 +507,8 @@
         /* Photo Gallery */
         .photo-gallery {
             margin-top: 40px;
+            position: relative;
+            min-height: 500px;
             opacity: 0;
         }
 
@@ -515,15 +517,43 @@
         }
 
         .photo-item {
-            margin: 40px 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
             opacity: 0;
-            transform: scale(0.9);
-            transition: all 1s ease;
+            transform: translateX(100%);
+            transition: none;
         }
 
-        .photo-item.show {
-            opacity: 1;
-            transform: scale(1);
+        .photo-item.active {
+            animation: slideInFromRight 1s ease forwards;
+        }
+
+        .photo-item.exit {
+            animation: slideOutToLeft 1s ease forwards;
+        }
+
+        @keyframes slideInFromRight {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideOutToLeft {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
         }
 
         .photo-item img {
@@ -542,8 +572,46 @@
             color: #555;
             margin-top: 15px;
             font-style: italic;
+        }
+
+        /* Final Message */
+        .final-message {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #1a1a2e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
             opacity: 0;
-            animation: fadeInText 1s ease 0.5s forwards;
+            visibility: hidden;
+            transition: opacity 2s ease;
+        }
+
+        .final-message.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .final-message h1 {
+            color: white;
+            font-size: 48px;
+            text-align: center;
+            animation: fadeInScale 2s ease forwards;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         /* Controls */
@@ -674,12 +742,21 @@
                 line-height: 1.8;
             }
 
+            .photo-gallery {
+                min-height: 400px;
+            }
+
             .photo-item img {
                 max-width: 100%;
             }
 
             .photo-caption {
                 font-size: 16px;
+            }
+
+            .final-message h1 {
+                font-size: 36px;
+                padding: 0 20px;
             }
 
             .controls {
@@ -749,8 +826,17 @@
                 margin: 15px 0;
             }
 
+            .photo-gallery {
+                min-height: 350px;
+            }
+
             .photo-caption {
                 font-size: 14px;
+            }
+
+            .final-message h1 {
+                font-size: 28px;
+                padding: 0 15px;
             }
 
             .cake-container {
@@ -820,7 +906,7 @@
     <!-- Banner -->
     <div class="banner-container">
         <div class="banner">
-            <h1>🎉 HAPPY BIRTHDAY 🎉 Silvia Mona Fitri </h1>
+            <h1>🎉 HAPPY BIRTHDAY 🎉 Silvia Mona Fitri</h1>
         </div>
     </div>
 
@@ -907,6 +993,11 @@
         </div>
     </div>
 
+    <!-- Final Message -->
+    <div class="final-message" id="finalMessage">
+        <h1>HBD kak iyak - joni 🎉</h1>
+    </div>
+
     <!-- Controls -->
     <div class="controls">
         <button class="btn" id="btnLights">💡 Turn On Lights</button>
@@ -941,6 +1032,7 @@
         const messageParagraphs = document.querySelectorAll('.message-container > p');
         const photoGallery = document.getElementById('photoGallery');
         const photoItems = document.querySelectorAll('.photo-item');
+        const finalMessage = document.getElementById('finalMessage');
 
         // State
         let lightsOn = false;
@@ -1056,31 +1148,59 @@
                 }, index * 800);
             });
             
-            // After all text is shown, show photos one by one
+            // After all text is shown, start photo slideshow
             const textDisplayTime = messageParagraphs.length * 800;
             
             setTimeout(() => {
                 photoGallery.classList.add('show');
-                
-                photoItems.forEach((photo, index) => {
-                    setTimeout(() => {
-                        photo.classList.add('show');
-                        
-                        // Auto hide after 5 seconds and show next
-                        setTimeout(() => {
-                            if (index < photoItems.length - 1) {
-                                photo.style.opacity = '0';
-                                photo.style.transform = 'scale(0.9)';
-                            }
-                        }, 5000);
-                    }, index * 5500); // 5 seconds display + 0.5s transition
-                });
+                startPhotoSlideshow();
             }, textDisplayTime + 1000);
             
             setTimeout(() => {
                 hideCurrentButton(btnMessage);
             }, 1500);
         });
+
+        function startPhotoSlideshow() {
+            let currentPhotoIndex = 0;
+            
+            function showNextPhoto() {
+                if (currentPhotoIndex < photoItems.length) {
+                    const currentPhoto = photoItems[currentPhotoIndex];
+                    
+                    // Show current photo with slide in from right
+                    currentPhoto.classList.add('active');
+                    
+                    // After 5 seconds, slide out to left and show next
+                    setTimeout(() => {
+                        currentPhoto.classList.remove('active');
+                        currentPhoto.classList.add('exit');
+                        
+                        // Move to next photo after exit animation
+                        setTimeout(() => {
+                            currentPhoto.classList.remove('exit');
+                            currentPhotoIndex++;
+                            
+                            if (currentPhotoIndex < photoItems.length) {
+                                showNextPhoto();
+                            } else {
+                                // All photos shown, show final message
+                                showFinalMessage();
+                            }
+                        }, 1000); // Wait for exit animation
+                        
+                    }, 5000); // Display photo for 5 seconds
+                }
+            }
+            
+            showNextPhoto();
+        }
+
+        function showFinalMessage() {
+            setTimeout(() => {
+                finalMessage.classList.add('show');
+            }, 1000);
+        }
 
         // Confetti
         btnConfetti.addEventListener('click', () => {
