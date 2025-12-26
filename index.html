@@ -273,18 +273,30 @@
 
         .cake {
             position: relative;
-            width: 250px;
+            width: 280px;
             margin: 0 auto;
         }
 
         .cake-layer {
             width: 100%;
-            height: 80px;
-            background: linear-gradient(135deg, #8B4513 0%, #A0522D 50%, #8B4513 100%);
-            border-radius: 10px;
+            height: 70px;
+            background: linear-gradient(to right, 
+                #8B4513 0%, 
+                #A0522D 12.5%, 
+                #8B4513 25%, 
+                #CD853F 37.5%,
+                #8B4513 50%,
+                #A0522D 62.5%,
+                #8B4513 75%,
+                #CD853F 87.5%,
+                #8B4513 100%
+            );
+            border-radius: 8px;
             position: relative;
-            margin-bottom: 5px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            margin-bottom: 8px;
+            box-shadow: 
+                0 4px 8px rgba(0,0,0,0.3),
+                inset 0 2px 4px rgba(255,255,255,0.1);
         }
 
         .cake-layer::before {
@@ -293,84 +305,151 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 15px;
-            background: linear-gradient(135deg, #FFE4E1 0%, #FFF0F5 50%, #FFE4E1 100%);
-            border-radius: 10px 10px 0 0;
+            height: 12px;
+            background: linear-gradient(135deg, 
+                #FFE4E1 0%, 
+                #FFF5EE 25%, 
+                #FFE4E1 50%, 
+                #FFF5EE 75%, 
+                #FFE4E1 100%
+            );
+            border-radius: 8px 8px 0 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
 
         .cake-layer::after {
             content: '';
             position: absolute;
-            top: 15px;
-            left: 10%;
-            right: 10%;
-            height: 50px;
+            top: 12px;
+            left: 0;
+            right: 0;
+            bottom: 0;
             background: repeating-linear-gradient(
                 90deg,
-                #D2691E 0px,
-                #D2691E 20px,
-                #8B4513 20px,
-                #8B4513 40px
+                #8B4513 0px,
+                #8B4513 35px,
+                #A0522D 35px,
+                #A0522D 70px
             );
+            border-radius: 0 0 8px 8px;
         }
 
         .cake-layer-2 {
-            width: 80%;
-            margin: 0 auto 5px;
+            width: 85%;
+            margin: 0 auto 8px;
         }
 
         .cake-layer-3 {
-            width: 60%;
+            width: 70%;
             margin: 0 auto;
         }
 
         .candles {
             position: absolute;
-            top: -60px;
+            top: -65px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            gap: 15px;
+            gap: 18px;
+            z-index: 10;
         }
 
         .candle {
-            width: 10px;
-            height: 50px;
-            background: linear-gradient(135deg, #FF69B4, #FF1493);
-            border-radius: 5px 5px 0 0;
+            width: 12px;
+            height: 55px;
+            background: linear-gradient(180deg, 
+                #FF69B4 0%, 
+                #FF1493 50%, 
+                #C71585 100%
+            );
+            border-radius: 6px 6px 0 0;
             position: relative;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            box-shadow: 
+                0 2px 5px rgba(0,0,0,0.3),
+                inset 2px 0 2px rgba(255,255,255,0.3),
+                inset -2px 0 2px rgba(0,0,0,0.2);
+        }
+
+        .candle::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 3px;
+            height: 8px;
+            background: #333;
+            border-radius: 2px;
         }
 
         .flame {
             position: absolute;
-            top: -25px;
+            top: -35px;
             left: 50%;
             transform: translateX(-50%);
-            width: 20px;
-            height: 30px;
-            background: radial-gradient(ellipse at center, #FFF 0%, #FFFF00 30%, #FFA500 60%, transparent 100%);
+            width: 24px;
+            height: 35px;
+            background: radial-gradient(ellipse at center, 
+                #FFF 0%, 
+                #FFF 10%,
+                #FFFF00 25%, 
+                #FFA500 50%, 
+                #FF6B00 70%,
+                transparent 100%
+            );
             border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
             opacity: 0;
-            animation: flicker 0.5s ease-in-out infinite;
+            filter: blur(1px);
         }
 
         .flame.lit {
             opacity: 1;
+            animation: flicker 0.3s ease-in-out infinite;
         }
 
         @keyframes flicker {
-            0%, 100% { transform: translateX(-50%) scale(1); }
-            50% { transform: translateX(-50%) scale(1.1); }
+            0%, 100% { 
+                transform: translateX(-50%) scale(1) translateY(0); 
+                filter: blur(1px);
+            }
+            50% { 
+                transform: translateX(-50%) scale(1.05) translateY(-2px); 
+                filter: blur(1.5px);
+            }
         }
 
         .cake-plate {
-            width: 300px;
-            height: 20px;
-            background: linear-gradient(135deg, #E8E8E8, #D3D3D3);
+            width: 320px;
+            height: 15px;
+            background: linear-gradient(135deg, 
+                #E8E8E8 0%, 
+                #F5F5F5 25%, 
+                #FFFFFF 50%, 
+                #F5F5F5 75%, 
+                #E8E8E8 100%
+            );
             border-radius: 50%;
-            margin: 0 auto;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            margin: 15px auto 0;
+            box-shadow: 
+                0 5px 15px rgba(0,0,0,0.3),
+                inset 0 2px 4px rgba(255,255,255,0.5);
+            position: relative;
+        }
+
+        .cake-plate::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 95%;
+            height: 8px;
+            background: linear-gradient(135deg, 
+                #D3D3D3 0%, 
+                #E8E8E8 50%, 
+                #D3D3D3 100%
+            );
+            border-radius: 50%;
         }
 
         /* Message */
@@ -512,15 +591,25 @@
             }
 
             .cake {
-                width: 200px;
+                width: 220px;
             }
 
             .cake-layer {
-                height: 60px;
+                height: 55px;
             }
 
             .cake-plate {
-                width: 240px;
+                width: 260px;
+            }
+
+            .candles {
+                gap: 14px;
+                top: -55px;
+            }
+
+            .candle {
+                width: 10px;
+                height: 45px;
             }
 
             .message-container {
@@ -560,6 +649,34 @@
 
             .banner-container {
                 margin-top: 100px;
+            }
+
+            .cake {
+                width: 180px;
+            }
+
+            .cake-layer {
+                height: 45px;
+            }
+
+            .cake-plate {
+                width: 220px;
+            }
+
+            .candles {
+                gap: 12px;
+                top: -50px;
+            }
+
+            .candle {
+                width: 8px;
+                height: 40px;
+            }
+
+            .flame {
+                width: 20px;
+                height: 28px;
+                top: -30px;
             }
 
             .message-container {
@@ -610,7 +727,8 @@
 </head>
 <body>
     <audio id="bgMusic" loop>
-        <source src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=" type="audio/wav">
+        <source src="musik.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
     </audio>
 
     <!-- Lights -->
@@ -749,7 +867,7 @@
         });
 
         function showNextButton() {
-            const buttons = [btnLights, btnMusic, btnBanner, btnBalloons, btnCake, btnCandles, btnMessage, btnConfetti];
+            const buttons = [btnLights, btnMusic, btnBanner, btnBalloons, btnCake, btnCandles, btnConfetti, btnMessage];
             if (currentStep < buttons.length) {
                 buttons[currentStep].classList.add('show');
             }
@@ -784,9 +902,11 @@
         // Play music
         btnMusic.addEventListener('click', () => {
             if (!musicPlaying) {
+                music.play();
                 btnMusic.textContent = '⏸️ Pause Music';
                 musicPlaying = true;
             } else {
+                music.pause();
                 btnMusic.textContent = '🎵 Play Music';
                 musicPlaying = false;
             }
