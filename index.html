@@ -13,10 +13,15 @@
 
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #1a1a2e;
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
+            transition: background 1.5s ease;
+        }
+
+        body.lights-on {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
 
         /* Stars/Lights Animation */
@@ -245,8 +250,9 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 400px;
-            margin-top: 80px;
+            min-height: 500px;
+            margin-top: 50px;
+            padding: 0 20px;
             opacity: 0;
             transform: scale(0);
             transition: all 1s ease;
@@ -257,9 +263,18 @@
             transform: scale(1);
         }
 
+        .cake-wrapper {
+            text-align: center;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
         .cake {
             position: relative;
             width: 250px;
+            margin: 0 auto;
         }
 
         .cake-layer {
@@ -403,35 +418,28 @@
         /* Controls */
         .controls {
             position: fixed;
-            bottom: 20px;
+            bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            justify-content: center;
-            max-width: 90%;
             z-index: 100;
-            padding: 15px;
-            background: rgba(255,255,255,0.95);
-            border-radius: 20px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
         }
 
         .btn {
-            padding: 15px 30px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 16px 32px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
             color: white;
-            border: none;
-            border-radius: 25px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
             cursor: pointer;
             font-size: 16px;
-            font-weight: bold;
+            font-weight: 600;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             display: none;
             opacity: 0;
             transform: scale(0.8);
+            letter-spacing: 0.5px;
         }
 
         .btn.show {
@@ -458,33 +466,30 @@
         }
 
         .btn:hover {
-            transform: translateY(-2px) scale(1.05);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
         }
 
         .btn:active {
-            transform: translateY(0) scale(1);
-        }
-
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
+            transform: translateY(0);
         }
 
         /* Mobile Responsive */
         @media (max-width: 768px) {
             .banner h1 {
-                font-size: 32px;
+                font-size: 28px;
                 letter-spacing: 2px;
             }
 
             .banner {
-                padding: 15px 40px;
+                padding: 15px 30px;
             }
 
             .banner::before,
             .banner::after {
-                font-size: 24px;
+                font-size: 20px;
             }
 
             .light-bulb {
@@ -520,7 +525,7 @@
 
             .message-container {
                 padding: 30px 20px;
-                margin: 40px 20px;
+                margin: 40px 20px 100px;
             }
 
             .message-container p {
@@ -529,26 +534,23 @@
             }
 
             .controls {
-                padding: 10px;
-                max-width: 95%;
-                bottom: 10px;
+                bottom: 20px;
             }
 
             .btn {
-                padding: 12px 20px;
-                font-size: 14px;
-                width: 100%;
+                padding: 14px 28px;
+                font-size: 15px;
             }
         }
 
         @media (max-width: 480px) {
             .banner h1 {
-                font-size: 24px;
+                font-size: 22px;
                 letter-spacing: 1px;
             }
 
             .banner {
-                padding: 12px 30px;
+                padding: 12px 25px;
             }
 
             .lights-container {
@@ -560,13 +562,24 @@
                 margin-top: 100px;
             }
 
+            .message-container {
+                padding: 25px 15px;
+                margin: 30px 15px 100px;
+            }
+
             .message-container p {
                 font-size: 14px;
                 margin: 15px 0;
             }
 
             .cake-container {
-                margin-top: 40px;
+                margin-top: 30px;
+                min-height: 400px;
+            }
+
+            .btn {
+                padding: 12px 24px;
+                font-size: 14px;
             }
         }
 
@@ -665,7 +678,7 @@
 
     <!-- Cake -->
     <div class="cake-container">
-        <div style="text-align: center;">
+        <div class="cake-wrapper">
             <div class="cake">
                 <div class="candles">
                     <div class="candle"><div class="flame"></div></div>
@@ -753,6 +766,10 @@
 
         // Turn on lights
         btnLights.addEventListener('click', () => {
+            // Turn on background
+            document.body.classList.add('lights-on');
+            
+            // Turn on bulbs
             bulbs.forEach((bulb, index) => {
                 setTimeout(() => {
                     bulb.classList.add('on');
