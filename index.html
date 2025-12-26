@@ -168,21 +168,48 @@
 
         .balloon-text {
             position: absolute;
-            bottom: -200px;
-            animation: fly-up 8s ease-in-out infinite;
+            bottom: -300px;
             opacity: 0;
+            visibility: hidden;
         }
 
         .balloon-text.show {
-            opacity: 1;
+            visibility: visible;
+            animation: fly-up 8s ease-in-out infinite;
         }
 
-        .balloon-text:nth-child(1) { left: 10%; animation-delay: 0s; }
-        .balloon-text:nth-child(2) { left: 25%; animation-delay: 1s; }
-        .balloon-text:nth-child(3) { left: 40%; animation-delay: 2s; }
-        .balloon-text:nth-child(4) { left: 55%; animation-delay: 3s; }
-        .balloon-text:nth-child(5) { left: 70%; animation-delay: 4s; }
-        .balloon-text:nth-child(6) { left: 85%; animation-delay: 5s; }
+        .balloon-text:nth-child(1) { animation-delay: 0s; }
+        .balloon-text:nth-child(2) { animation-delay: 1s; }
+        .balloon-text:nth-child(3) { animation-delay: 2s; }
+        .balloon-text:nth-child(4) { animation-delay: 3s; }
+        .balloon-text:nth-child(5) { animation-delay: 4s; }
+        .balloon-text:nth-child(6) { animation-delay: 5s; }
+
+        @keyframes fly-up {
+            0% { 
+                bottom: -300px;
+                opacity: 0;
+                transform: translateX(0) rotate(0deg);
+            }
+            10% {
+                opacity: 1;
+            }
+            50% {
+                transform: translateX(30px) rotate(5deg);
+            }
+            100% { 
+                bottom: 120%;
+                opacity: 0;
+                transform: translateX(-30px) rotate(-5deg);
+            }
+        }
+
+        .balloon-text:nth-child(1) { left: 10%; }
+        .balloon-text:nth-child(2) { left: 25%; }
+        .balloon-text:nth-child(3) { left: 40%; }
+        .balloon-text:nth-child(4) { left: 55%; }
+        .balloon-text:nth-child(5) { left: 70%; }
+        .balloon-text:nth-child(6) { left: 85%; }
 
         .balloon {
             width: 80px;
@@ -229,20 +256,6 @@
             font-size: 36px;
             font-weight: bold;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        @keyframes fly-up {
-            0% { 
-                bottom: -200px; 
-                transform: translateX(0) rotate(0deg);
-            }
-            50% {
-                transform: translateX(30px) rotate(5deg);
-            }
-            100% { 
-                bottom: 120%;
-                transform: translateX(-30px) rotate(-5deg);
-            }
         }
 
         /* Cake */
@@ -480,18 +493,57 @@
             transform: translateY(20px);
         }
 
-        .message-container.show p {
-            animation: fadeIn 1s ease forwards;
+        .message-container.show p.fade-in {
+            animation: fadeInText 1s ease forwards;
         }
 
-        .message-container p:nth-child(1) { animation-delay: 0.1s; }
-        .message-container p:nth-child(2) { animation-delay: 0.2s; }
-        .message-container p:nth-child(3) { animation-delay: 0.3s; }
-        .message-container p:nth-child(4) { animation-delay: 0.4s; }
-        .message-container p:nth-child(5) { animation-delay: 0.5s; }
+        @keyframes fadeInText {
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-        @keyframes fadeIn {
-            to { opacity: 1; }
+        /* Photo Gallery */
+        .photo-gallery {
+            margin-top: 40px;
+            opacity: 0;
+        }
+
+        .photo-gallery.show {
+            opacity: 1;
+        }
+
+        .photo-item {
+            margin: 40px 0;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 1s ease;
+        }
+
+        .photo-item.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .photo-item img {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+            display: block;
+            margin: 0 auto;
+        }
+
+        .photo-caption {
+            text-align: center;
+            font-size: 18px;
+            color: #555;
+            margin-top: 15px;
+            font-style: italic;
+            opacity: 0;
+            animation: fadeInText 1s ease 0.5s forwards;
         }
 
         /* Controls */
@@ -622,6 +674,14 @@
                 line-height: 1.8;
             }
 
+            .photo-item img {
+                max-width: 100%;
+            }
+
+            .photo-caption {
+                font-size: 16px;
+            }
+
             .controls {
                 bottom: 20px;
             }
@@ -687,6 +747,10 @@
             .message-container p {
                 font-size: 14px;
                 margin: 15px 0;
+            }
+
+            .photo-caption {
+                font-size: 14px;
             }
 
             .cake-container {
@@ -814,7 +878,7 @@
     </div>
 
     <!-- Birthday Message -->
-    <div class="message-container">
+    <div class="message-container" id="messageContainer">
         <p>Today is a special day...</p>
         <p>A day to celebrate YOU!</p>
         <p>May this year bring you joy, success, and countless blessings</p>
@@ -822,6 +886,25 @@
         <p>And may you always find reasons to smile</p>
         <p><strong>Wishing you the happiest birthday ever!</strong></p>
         <p>🎂🎈🎁🎉</p>
+        
+        <div class="photo-gallery" id="photoGallery">
+            <div class="photo-item" data-photo="1">
+                <img src="foto/f1.jpg" alt="Memory 1" onerror="this.src='foto/f1.png'">
+                <p class="photo-caption">Beautiful memories we shared together</p>
+            </div>
+            <div class="photo-item" data-photo="2">
+                <img src="foto/f2.jpg" alt="Memory 2" onerror="this.src='foto/f2.png'">
+                <p class="photo-caption">Moments that made us smile</p>
+            </div>
+            <div class="photo-item" data-photo="3">
+                <img src="foto/f3.jpg" alt="Memory 3" onerror="this.src='foto/f3.png'">
+                <p class="photo-caption">Times we'll never forget</p>
+            </div>
+            <div class="photo-item" data-photo="4">
+                <img src="foto/f4.jpg" alt="Memory 4" onerror="this.src='foto/f4.png'">
+                <p class="photo-caption">Forever grateful for these moments</p>
+            </div>
+        </div>
     </div>
 
     <!-- Controls -->
@@ -854,7 +937,10 @@
         const balloons = document.querySelectorAll('.balloon-text');
         const cakeContainer = document.querySelector('.cake-container');
         const flames = document.querySelectorAll('.flame');
-        const messageContainer = document.querySelector('.message-container');
+        const messageContainer = document.getElementById('messageContainer');
+        const messageParagraphs = document.querySelectorAll('.message-container > p');
+        const photoGallery = document.getElementById('photoGallery');
+        const photoItems = document.querySelectorAll('.photo-item');
 
         // State
         let lightsOn = false;
@@ -901,15 +987,8 @@
 
         // Play music
         btnMusic.addEventListener('click', () => {
-            if (!musicPlaying) {
-                music.play();
-                btnMusic.textContent = '⏸️ Pause Music';
-                musicPlaying = true;
-            } else {
-                music.pause();
-                btnMusic.textContent = '🎵 Play Music';
-                musicPlaying = false;
-            }
+            music.play();
+            musicPlaying = true;
             
             setTimeout(() => {
                 hideCurrentButton(btnMusic);
@@ -961,6 +1040,42 @@
         // Show message
         btnMessage.addEventListener('click', () => {
             messageContainer.classList.add('show');
+            
+            // Scroll to message container
+            setTimeout(() => {
+                messageContainer.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'center' 
+                });
+            }, 100);
+            
+            // Show each paragraph sequentially
+            messageParagraphs.forEach((p, index) => {
+                setTimeout(() => {
+                    p.classList.add('fade-in');
+                }, index * 800);
+            });
+            
+            // After all text is shown, show photos one by one
+            const textDisplayTime = messageParagraphs.length * 800;
+            
+            setTimeout(() => {
+                photoGallery.classList.add('show');
+                
+                photoItems.forEach((photo, index) => {
+                    setTimeout(() => {
+                        photo.classList.add('show');
+                        
+                        // Auto hide after 5 seconds and show next
+                        setTimeout(() => {
+                            if (index < photoItems.length - 1) {
+                                photo.style.opacity = '0';
+                                photo.style.transform = 'scale(0.9)';
+                            }
+                        }, 5000);
+                    }, index * 5500); // 5 seconds display + 0.5s transition
+                });
+            }, textDisplayTime + 1000);
             
             setTimeout(() => {
                 hideCurrentButton(btnMessage);
