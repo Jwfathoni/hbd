@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Stars/Lights Animation */
+        .lights-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 120px;
+            z-index: 10;
+            display: flex;
+            justify-content: space-around;
+            padding: 20px;
+        }
+
+        .light-bulb {
+            width: 50px;
+            height: 50px;
+            position: relative;
+            animation: swing 3s ease-in-out infinite;
+        }
+
+        .light-bulb:nth-child(2) { animation-delay: 0.5s; }
+        .light-bulb:nth-child(3) { animation-delay: 1s; }
+        .light-bulb:nth-child(4) { animation-delay: 1.5s; }
+        .light-bulb:nth-child(5) { animation-delay: 2s; }
+        .light-bulb:nth-child(6) { animation-delay: 2.5s; }
+
+        .bulb {
+            width: 40px;
+            height: 50px;
+            background: radial-gradient(circle at 30% 30%, #fff, var(--bulb-color));
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            position: relative;
+            box-shadow: 0 0 20px var(--bulb-color), 0 0 40px var(--bulb-color);
+            opacity: 0;
+            transition: opacity 1s;
+        }
+
+        .bulb.on {
+            opacity: 1;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        .bulb::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 10px;
+            background: #666;
+            border-radius: 5px 5px 0 0;
+        }
+
+        .bulb::after {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 20px;
+            background: #444;
+        }
+
+        @keyframes swing {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px var(--bulb-color), 0 0 40px var(--bulb-color); }
+            50% { box-shadow: 0 0 30px var(--bulb-color), 0 0 60px var(--bulb-color); }
+        }
+
+        /* Banner */
+        .banner-container {
+            text-align: center;
+            margin-top: 140px;
+            opacity: 0;
+            transform: translateY(-50px);
+            transition: all 1s ease;
+        }
+
+        .banner-container.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .banner {
+            display: inline-block;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 20px 60px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .banner::before,
+        .banner::after {
+            content: '🎈';
+            position: absolute;
+            font-size: 30px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .banner::before {
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .banner::after {
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            animation-delay: 1.5s;
+        }
+
+        .banner h1 {
+            color: white;
+            font-size: 48px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            letter-spacing: 3px;
+            margin: 0;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(-50%) rotate(-5deg); }
+            50% { transform: translateY(-60%) rotate(5deg); }
+        }
+
+        /* Balloons with Text */
+        .balloons-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .balloon-text {
+            position: absolute;
+            bottom: -200px;
+            animation: fly-up 8s ease-in-out infinite;
+            opacity: 0;
+        }
+
+        .balloon-text.show {
+            opacity: 1;
+        }
+
+        .balloon-text:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .balloon-text:nth-child(2) { left: 25%; animation-delay: 1s; }
+        .balloon-text:nth-child(3) { left: 40%; animation-delay: 2s; }
+        .balloon-text:nth-child(4) { left: 55%; animation-delay: 3s; }
+        .balloon-text:nth-child(5) { left: 70%; animation-delay: 4s; }
+        .balloon-text:nth-child(6) { left: 85%; animation-delay: 5s; }
+
+        .balloon {
+            width: 80px;
+            height: 100px;
+            background: var(--balloon-color);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            position: relative;
+            box-shadow: inset -10px -10px 20px rgba(0,0,0,0.2), 
+                        0 5px 20px rgba(0,0,0,0.3);
+        }
+
+        .balloon::before {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 15px solid var(--balloon-color);
+            filter: brightness(0.8);
+        }
+
+        .balloon::after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 80px;
+            background: #fff;
+            opacity: 0.5;
+        }
+
+        .balloon-letter {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 36px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        @keyframes fly-up {
+            0% { 
+                bottom: -200px; 
+                transform: translateX(0) rotate(0deg);
+            }
+            50% {
+                transform: translateX(30px) rotate(5deg);
+            }
+            100% { 
+                bottom: 120%;
+                transform: translateX(-30px) rotate(-5deg);
+            }
+        }
+
+        /* Cake */
+        .cake-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 400px;
+            margin-top: 80px;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 1s ease;
+        }
+
+        .cake-container.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .cake {
+            position: relative;
+            width: 250px;
+        }
+
+        .cake-layer {
+            width: 100%;
+            height: 80px;
+            background: linear-gradient(135deg, #8B4513 0%, #A0522D 50%, #8B4513 100%);
+            border-radius: 10px;
+            position: relative;
+            margin-bottom: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .cake-layer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 15px;
+            background: linear-gradient(135deg, #FFE4E1 0%, #FFF0F5 50%, #FFE4E1 100%);
+            border-radius: 10px 10px 0 0;
+        }
+
+        .cake-layer::after {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 10%;
+            right: 10%;
+            height: 50px;
+            background: repeating-linear-gradient(
+                90deg,
+                #D2691E 0px,
+                #D2691E 20px,
+                #8B4513 20px,
+                #8B4513 40px
+            );
+        }
+
+        .cake-layer-2 {
+            width: 80%;
+            margin: 0 auto 5px;
+        }
+
+        .cake-layer-3 {
+            width: 60%;
+            margin: 0 auto;
+        }
+
+        .candles {
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+        }
+
+        .candle {
+            width: 10px;
+            height: 50px;
+            background: linear-gradient(135deg, #FF69B4, #FF1493);
+            border-radius: 5px 5px 0 0;
+            position: relative;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .flame {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 30px;
+            background: radial-gradient(ellipse at center, #FFF 0%, #FFFF00 30%, #FFA500 60%, transparent 100%);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            opacity: 0;
+            animation: flicker 0.5s ease-in-out infinite;
+        }
+
+        .flame.lit {
+            opacity: 1;
+        }
+
+        @keyframes flicker {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.1); }
+        }
+
+        .cake-plate {
+            width: 300px;
+            height: 20px;
+            background: linear-gradient(135deg, #E8E8E8, #D3D3D3);
+            border-radius: 50%;
+            margin: 0 auto;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+
+        /* Message */
+        .message-container {
+            max-width: 800px;
+            margin: 60px auto;
+            padding: 40px;
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s ease;
+        }
+
+        .message-container.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .message-container p {
+            font-size: 20px;
+            line-height: 2;
+            color: #333;
+            text-align: center;
+            margin: 20px 0;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .message-container.show p {
+            animation: fadeIn 1s ease forwards;
+        }
+
+        .message-container p:nth-child(1) { animation-delay: 0.1s; }
+        .message-container p:nth-child(2) { animation-delay: 0.2s; }
+        .message-container p:nth-child(3) { animation-delay: 0.3s; }
+        .message-container p:nth-child(4) { animation-delay: 0.4s; }
+        .message-container p:nth-child(5) { animation-delay: 0.5s; }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* Controls */
+        .controls {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 90%;
+            z-index: 100;
+            padding: 15px;
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+
+        .btn {
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            display: none;
+            opacity: 0;
+            transform: scale(0.8);
+        }
+
+        .btn.show {
+            display: inline-block;
+            animation: btnAppear 0.5s ease forwards;
+        }
+
+        .btn.hide {
+            animation: btnDisappear 0.5s ease forwards;
+        }
+
+        @keyframes btnAppear {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes btnDisappear {
+            to {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+        }
+
+        .btn:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0) scale(1);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .banner h1 {
+                font-size: 32px;
+                letter-spacing: 2px;
+            }
+
+            .banner {
+                padding: 15px 40px;
+            }
+
+            .banner::before,
+            .banner::after {
+                font-size: 24px;
+            }
+
+            .light-bulb {
+                width: 35px;
+                height: 35px;
+            }
+
+            .bulb {
+                width: 30px;
+                height: 40px;
+            }
+
+            .balloon {
+                width: 60px;
+                height: 75px;
+            }
+
+            .balloon-letter {
+                font-size: 28px;
+            }
+
+            .cake {
+                width: 200px;
+            }
+
+            .cake-layer {
+                height: 60px;
+            }
+
+            .cake-plate {
+                width: 240px;
+            }
+
+            .message-container {
+                padding: 30px 20px;
+                margin: 40px 20px;
+            }
+
+            .message-container p {
+                font-size: 16px;
+                line-height: 1.8;
+            }
+
+            .controls {
+                padding: 10px;
+                max-width: 95%;
+                bottom: 10px;
+            }
+
+            .btn {
+                padding: 12px 20px;
+                font-size: 14px;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .banner h1 {
+                font-size: 24px;
+                letter-spacing: 1px;
+            }
+
+            .banner {
+                padding: 12px 30px;
+            }
+
+            .lights-container {
+                height: 80px;
+                padding: 10px;
+            }
+
+            .banner-container {
+                margin-top: 100px;
+            }
+
+            .message-container p {
+                font-size: 14px;
+                margin: 15px 0;
+            }
+
+            .cake-container {
+                margin-top: 40px;
+            }
+        }
+
+        /* Audio Player */
+        audio {
+            display: none;
+        }
+
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--confetti-color);
+            position: fixed;
+            top: -10px;
+            animation: fall 3s linear;
+            z-index: 1000;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <audio id="bgMusic" loop>
+        <source src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=" type="audio/wav">
+    </audio>
+
+    <!-- Lights -->
+    <div class="lights-container">
+        <div class="light-bulb">
+            <div class="bulb" style="--bulb-color: #FFD700;"></div>
+        </div>
+        <div class="light-bulb">
+            <div class="bulb" style="--bulb-color: #FF6B6B;"></div>
+        </div>
+        <div class="light-bulb">
+            <div class="bulb" style="--bulb-color: #4ECDC4;"></div>
+        </div>
+        <div class="light-bulb">
+            <div class="bulb" style="--bulb-color: #95E1D3;"></div>
+        </div>
+        <div class="light-bulb">
+            <div class="bulb" style="--bulb-color: #F38181;"></div>
+        </div>
+        <div class="light-bulb">
+            <div class="bulb" style="--bulb-color: #AA96DA;"></div>
+        </div>
+    </div>
+
+    <!-- Banner -->
+    <div class="banner-container">
+        <div class="banner">
+            <h1>🎉 HAPPY BIRTHDAY 🎉</h1>
+        </div>
+    </div>
+
+    <!-- Balloons with Text -->
+    <div class="balloons-container" id="balloonsContainer">
+        <div class="balloon-text" style="--balloon-color: #FF6B6B;">
+            <div class="balloon">
+                <div class="balloon-letter">H</div>
+            </div>
+        </div>
+        <div class="balloon-text" style="--balloon-color: #4ECDC4;">
+            <div class="balloon">
+                <div class="balloon-letter">A</div>
+            </div>
+        </div>
+        <div class="balloon-text" style="--balloon-color: #FFE66D;">
+            <div class="balloon">
+                <div class="balloon-letter">P</div>
+            </div>
+        </div>
+        <div class="balloon-text" style="--balloon-color: #95E1D3;">
+            <div class="balloon">
+                <div class="balloon-letter">P</div>
+            </div>
+        </div>
+        <div class="balloon-text" style="--balloon-color: #F38181;">
+            <div class="balloon">
+                <div class="balloon-letter">Y</div>
+            </div>
+        </div>
+        <div class="balloon-text" style="--balloon-color: #AA96DA;">
+            <div class="balloon">
+                <div class="balloon-letter">!</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cake -->
+    <div class="cake-container">
+        <div style="text-align: center;">
+            <div class="cake">
+                <div class="candles">
+                    <div class="candle"><div class="flame"></div></div>
+                    <div class="candle"><div class="flame"></div></div>
+                    <div class="candle"><div class="flame"></div></div>
+                    <div class="candle"><div class="flame"></div></div>
+                    <div class="candle"><div class="flame"></div></div>
+                </div>
+                <div class="cake-layer cake-layer-3"></div>
+                <div class="cake-layer cake-layer-2"></div>
+                <div class="cake-layer"></div>
+            </div>
+            <div class="cake-plate"></div>
+        </div>
+    </div>
+
+    <!-- Birthday Message -->
+    <div class="message-container">
+        <p>Today is a special day...</p>
+        <p>A day to celebrate YOU!</p>
+        <p>May this year bring you joy, success, and countless blessings</p>
+        <p>May all your dreams come true</p>
+        <p>And may you always find reasons to smile</p>
+        <p><strong>Wishing you the happiest birthday ever!</strong></p>
+        <p>🎂🎈🎁🎉</p>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+        <button class="btn" id="btnLights">💡 Turn On Lights</button>
+        <button class="btn" id="btnMusic">🎵 Play Music</button>
+        <button class="btn" id="btnBanner">🎊 Show Banner</button>
+        <button class="btn" id="btnBalloons">🎈 Fly Balloons</button>
+        <button class="btn" id="btnCake">🎂 Bring the Cake</button>
+        <button class="btn" id="btnCandles">🕯️ Light Candles</button>
+        <button class="btn" id="btnMessage">💌 Show Message</button>
+        <button class="btn" id="btnConfetti">🎉 Confetti!</button>
+    </div>
+
+    <script>
+        // Button elements
+        const btnLights = document.getElementById('btnLights');
+        const btnMusic = document.getElementById('btnMusic');
+        const btnBanner = document.getElementById('btnBanner');
+        const btnBalloons = document.getElementById('btnBalloons');
+        const btnCake = document.getElementById('btnCake');
+        const btnCandles = document.getElementById('btnCandles');
+        const btnMessage = document.getElementById('btnMessage');
+        const btnConfetti = document.getElementById('btnConfetti');
+
+        // Elements
+        const bulbs = document.querySelectorAll('.bulb');
+        const music = document.getElementById('bgMusic');
+        const banner = document.querySelector('.banner-container');
+        const balloons = document.querySelectorAll('.balloon-text');
+        const cakeContainer = document.querySelector('.cake-container');
+        const flames = document.querySelectorAll('.flame');
+        const messageContainer = document.querySelector('.message-container');
+
+        // State
+        let lightsOn = false;
+        let musicPlaying = false;
+        let currentStep = 0;
+
+        // Show first button on load
+        window.addEventListener('load', () => {
+            showNextButton();
+        });
+
+        function showNextButton() {
+            const buttons = [btnLights, btnMusic, btnBanner, btnBalloons, btnCake, btnCandles, btnMessage, btnConfetti];
+            if (currentStep < buttons.length) {
+                buttons[currentStep].classList.add('show');
+            }
+        }
+
+        function hideCurrentButton(button) {
+            button.classList.add('hide');
+            setTimeout(() => {
+                button.style.display = 'none';
+                currentStep++;
+                showNextButton();
+            }, 500);
+        }
+
+        // Turn on lights
+        btnLights.addEventListener('click', () => {
+            bulbs.forEach((bulb, index) => {
+                setTimeout(() => {
+                    bulb.classList.add('on');
+                }, index * 200);
+            });
+            
+            setTimeout(() => {
+                hideCurrentButton(btnLights);
+            }, 1500);
+        });
+
+        // Play music
+        btnMusic.addEventListener('click', () => {
+            if (!musicPlaying) {
+                btnMusic.textContent = '⏸️ Pause Music';
+                musicPlaying = true;
+            } else {
+                btnMusic.textContent = '🎵 Play Music';
+                musicPlaying = false;
+            }
+            
+            setTimeout(() => {
+                hideCurrentButton(btnMusic);
+            }, 500);
+        });
+
+        // Show banner
+        btnBanner.addEventListener('click', () => {
+            banner.classList.add('show');
+            
+            setTimeout(() => {
+                hideCurrentButton(btnBanner);
+            }, 1200);
+        });
+
+        // Fly balloons
+        btnBalloons.addEventListener('click', () => {
+            balloons.forEach(balloon => {
+                balloon.classList.add('show');
+            });
+            
+            setTimeout(() => {
+                hideCurrentButton(btnBalloons);
+            }, 2000);
+        });
+
+        // Show cake
+        btnCake.addEventListener('click', () => {
+            cakeContainer.classList.add('show');
+            
+            setTimeout(() => {
+                hideCurrentButton(btnCake);
+            }, 1200);
+        });
+
+        // Light candles
+        btnCandles.addEventListener('click', () => {
+            flames.forEach((flame, index) => {
+                setTimeout(() => {
+                    flame.classList.add('lit');
+                }, index * 300);
+            });
+            
+            setTimeout(() => {
+                hideCurrentButton(btnCandles);
+            }, 2000);
+        });
+
+        // Show message
+        btnMessage.addEventListener('click', () => {
+            messageContainer.classList.add('show');
+            
+            setTimeout(() => {
+                hideCurrentButton(btnMessage);
+            }, 1500);
+        });
+
+        // Confetti
+        btnConfetti.addEventListener('click', () => {
+            createConfetti();
+            setTimeout(() => {
+                hideCurrentButton(btnConfetti);
+            }, 500);
+        });
+
+        function createConfetti() {
+            const colors = ['#FFD700', '#FF6B6B', '#4ECDC4', '#95E1D3', '#F38181', '#AA96DA'];
+            for (let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.setProperty('--confetti-color', colors[Math.floor(Math.random() * colors.length)]);
+                    confetti.style.animationDelay = Math.random() * 2 + 's';
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 3000);
+                }, i * 30);
+            }
+        }
+    </script>
+</body>
+</html>
