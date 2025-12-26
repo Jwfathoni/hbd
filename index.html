@@ -508,7 +508,7 @@
         .photo-gallery {
             margin-top: 40px;
             position: relative;
-            min-height: 500px;
+            min-height: 450px;
             opacity: 0;
         }
 
@@ -558,8 +558,10 @@
 
         .photo-item img {
             width: 100%;
-            max-width: 600px;
+            max-width: 500px;
             height: auto;
+            max-height: 400px;
+            object-fit: contain;
             border-radius: 15px;
             box-shadow: 0 8px 30px rgba(0,0,0,0.2);
             display: block;
@@ -677,101 +679,12 @@
 
         /* Mobile Responsive */
         @media (max-width: 768px) {
+            body {
+                overflow-x: hidden;
+            }
+
             .banner h1 {
-                font-size: 28px;
-                letter-spacing: 2px;
-            }
-
-            .banner {
-                padding: 15px 30px;
-            }
-
-            .banner::before,
-            .banner::after {
-                font-size: 20px;
-            }
-
-            .light-bulb {
-                width: 35px;
-                height: 35px;
-            }
-
-            .bulb {
-                width: 30px;
-                height: 40px;
-            }
-
-            .balloon {
-                width: 60px;
-                height: 75px;
-            }
-
-            .balloon-letter {
-                font-size: 28px;
-            }
-
-            .cake {
-                width: 220px;
-            }
-
-            .cake-layer {
-                height: 55px;
-            }
-
-            .cake-plate {
-                width: 260px;
-            }
-
-            .candles {
-                gap: 14px;
-                top: -55px;
-            }
-
-            .candle {
-                width: 10px;
-                height: 45px;
-            }
-
-            .message-container {
-                padding: 30px 20px;
-                margin: 40px 20px 100px;
-            }
-
-            .message-container p {
-                font-size: 16px;
-                line-height: 1.8;
-            }
-
-            .photo-gallery {
-                min-height: 400px;
-            }
-
-            .photo-item img {
-                max-width: 100%;
-            }
-
-            .photo-caption {
-                font-size: 16px;
-            }
-
-            .final-message h1 {
-                font-size: 36px;
-                padding: 0 20px;
-            }
-
-            .controls {
-                bottom: 20px;
-            }
-
-            .btn {
-                padding: 14px 28px;
-                font-size: 15px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .banner h1 {
-                font-size: 22px;
+                font-size: 24px;
                 letter-spacing: 1px;
             }
 
@@ -779,13 +692,28 @@
                 padding: 12px 25px;
             }
 
-            .lights-container {
-                height: 80px;
-                padding: 10px;
+            .banner::before,
+            .banner::after {
+                font-size: 18px;
             }
 
-            .banner-container {
-                margin-top: 100px;
+            .light-bulb {
+                width: 30px;
+                height: 30px;
+            }
+
+            .bulb {
+                width: 25px;
+                height: 35px;
+            }
+
+            .balloon {
+                width: 50px;
+                height: 65px;
+            }
+
+            .balloon-letter {
+                font-size: 24px;
             }
 
             .cake {
@@ -810,43 +738,139 @@
                 height: 40px;
             }
 
-            .flame {
-                width: 20px;
-                height: 28px;
-                top: -30px;
-            }
-
             .message-container {
                 padding: 25px 15px;
-                margin: 30px 15px 100px;
+                margin: 30px 15px 120px;
+                max-width: 95%;
             }
 
             .message-container p {
-                font-size: 14px;
+                font-size: 15px;
+                line-height: 1.7;
                 margin: 15px 0;
             }
 
             .photo-gallery {
                 min-height: 350px;
+                margin-top: 30px;
+            }
+
+            .photo-item img {
+                max-width: 100%;
+                max-height: 300px;
             }
 
             .photo-caption {
                 font-size: 14px;
+                padding: 0 10px;
             }
 
             .final-message h1 {
-                font-size: 28px;
-                padding: 0 15px;
+                font-size: 32px;
+                padding: 0 20px;
             }
 
-            .cake-container {
-                margin-top: 30px;
-                min-height: 400px;
+            .controls {
+                bottom: 15px;
             }
 
             .btn {
                 padding: 12px 24px;
                 font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .banner h1 {
+                font-size: 20px;
+                letter-spacing: 0.5px;
+            }
+
+            .banner {
+                padding: 10px 20px;
+            }
+
+            .banner::before,
+            .banner::after {
+                font-size: 16px;
+            }
+
+            .lights-container {
+                height: 70px;
+                padding: 8px;
+            }
+
+            .banner-container {
+                margin-top: 90px;
+            }
+
+            .cake {
+                width: 150px;
+            }
+
+            .cake-layer {
+                height: 38px;
+            }
+
+            .cake-plate {
+                width: 180px;
+            }
+
+            .candles {
+                gap: 10px;
+                top: -45px;
+            }
+
+            .candle {
+                width: 7px;
+                height: 35px;
+            }
+
+            .flame {
+                width: 18px;
+                height: 25px;
+                top: -28px;
+            }
+
+            .message-container {
+                padding: 20px 12px;
+                margin: 25px 10px 100px;
+            }
+
+            .message-container p {
+                font-size: 13px;
+                margin: 12px 0;
+                line-height: 1.6;
+            }
+
+            .photo-gallery {
+                min-height: 300px;
+                margin-top: 25px;
+            }
+
+            .photo-item img {
+                max-height: 250px;
+            }
+
+            .photo-caption {
+                font-size: 12px;
+                padding: 0 8px;
+                margin-top: 10px;
+            }
+
+            .final-message h1 {
+                font-size: 24px;
+                padding: 0 15px;
+            }
+
+            .cake-container {
+                margin-top: 25px;
+                min-height: 350px;
+            }
+
+            .btn {
+                padding: 10px 20px;
+                font-size: 13px;
             }
         }
 
@@ -906,7 +930,7 @@
     <!-- Banner -->
     <div class="banner-container">
         <div class="banner">
-            <h1>🎉 HAPPY BIRTHDAY 🎉 Silvia Mona Fitri</h1>
+            <h1>🎉 HAPPY BIRTHDAY 🎉<br>Silvia Mona Fitri</h1>
         </div>
     </div>
 
@@ -995,7 +1019,7 @@
 
     <!-- Final Message -->
     <div class="final-message" id="finalMessage">
-        <h1>HBD kak iyak - joni 🎉</h1>
+        <h1>HBD Kak Iyak 🎉<br>- Joni</h1>
     </div>
 
     <!-- Controls -->
@@ -1062,6 +1086,9 @@
 
         // Turn on lights
         btnLights.addEventListener('click', () => {
+            if (btnLights.disabled) return;
+            btnLights.disabled = true;
+            
             // Turn on background
             document.body.classList.add('lights-on');
             
@@ -1079,6 +1106,9 @@
 
         // Play music
         btnMusic.addEventListener('click', () => {
+            if (btnMusic.disabled) return;
+            btnMusic.disabled = true;
+            
             music.play();
             musicPlaying = true;
             
@@ -1089,6 +1119,9 @@
 
         // Show banner
         btnBanner.addEventListener('click', () => {
+            if (btnBanner.disabled) return;
+            btnBanner.disabled = true;
+            
             banner.classList.add('show');
             
             setTimeout(() => {
@@ -1098,6 +1131,9 @@
 
         // Fly balloons
         btnBalloons.addEventListener('click', () => {
+            if (btnBalloons.disabled) return;
+            btnBalloons.disabled = true;
+            
             balloons.forEach(balloon => {
                 balloon.classList.add('show');
             });
@@ -1109,6 +1145,9 @@
 
         // Show cake
         btnCake.addEventListener('click', () => {
+            if (btnCake.disabled) return;
+            btnCake.disabled = true;
+            
             cakeContainer.classList.add('show');
             
             setTimeout(() => {
@@ -1118,6 +1157,9 @@
 
         // Light candles
         btnCandles.addEventListener('click', () => {
+            if (btnCandles.disabled) return;
+            btnCandles.disabled = true;
+            
             flames.forEach((flame, index) => {
                 setTimeout(() => {
                     flame.classList.add('lit');
@@ -1129,8 +1171,22 @@
             }, 2000);
         });
 
+        // Confetti
+        btnConfetti.addEventListener('click', () => {
+            if (btnConfetti.disabled) return;
+            btnConfetti.disabled = true;
+            
+            createConfetti();
+            setTimeout(() => {
+                hideCurrentButton(btnConfetti);
+            }, 500);
+        });
+
         // Show message
         btnMessage.addEventListener('click', () => {
+            if (btnMessage.disabled) return;
+            btnMessage.disabled = true;
+            
             messageContainer.classList.add('show');
             
             // Scroll to message container
@@ -1201,14 +1257,6 @@
                 finalMessage.classList.add('show');
             }, 1000);
         }
-
-        // Confetti
-        btnConfetti.addEventListener('click', () => {
-            createConfetti();
-            setTimeout(() => {
-                hideCurrentButton(btnConfetti);
-            }, 500);
-        });
 
         function createConfetti() {
             const colors = ['#FFD700', '#FF6B6B', '#4ECDC4', '#95E1D3', '#F38181', '#AA96DA'];
