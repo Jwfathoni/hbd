@@ -24,7 +24,6 @@
         }
 
         /* === 1. LAMPU === */
-        /* Z-Index diatur ke 10, nanti pesan akan di atas ini */
         .lights-container {
             position: fixed;
             top: 0; width: 100%;
@@ -109,7 +108,7 @@
             color: white; font-size: 1.2rem; margin-top: 5px; font-weight: 300;
         }
 
-        /* === 3. CAKE === */
+        /* === 3. CAKE (FIXED CENTERING) === */
         .cake-container {
             display: flex; justify-content: center; align-items: center;
             margin-top: 50px;
@@ -118,7 +117,12 @@
         }
         .cake-container.visible { opacity: 1; transform: scale(1); }
 
-        .cake { position: relative; width: 250px; margin-bottom: 20px; }
+        /* PERBAIKAN: Menambahkan margin: 0 auto agar kue benar-benar di tengah */
+        .cake { 
+            position: relative; 
+            width: 250px; 
+            margin: 0 auto 20px auto; /* Margin auto kiri-kanan, 20px bawah */
+        }
 
         .cake-layer {
             width: 100%; height: 60px;
@@ -181,15 +185,14 @@
             to { transform: translateY(105vh) rotate(360deg); opacity: 0; }
         }
 
-        /* === 5. WHITE CARD MESSAGE (REVISI) === */
-        /* Z-Index 50 agar di atas lampu (yang indexnya 10) */
+        /* === 5. WHITE CARD MESSAGE (REVISI TEKS & SPACING) === */
         .message-card {
             margin: 40px auto 100px;
             width: 90%; max-width: 500px;
-            padding: 40px;
+            padding: 35px; /* Sedikit dikurangi paddingnya */
             border-radius: 20px;
-            background: #ffffff; /* Solid White */
-            color: #333333; /* Dark Text */
+            background: #ffffff;
+            color: #333333;
             box-shadow: 0 20px 50px rgba(0,0,0,0.3);
             text-align: center;
             opacity: 0; 
@@ -197,7 +200,7 @@
             display: none; 
             transition: all 1s ease;
             position: relative;
-            z-index: 50; /* KUNCI AGAR TIDAK TERTUTUP LAMPU */
+            z-index: 50;
         }
 
         .message-card.visible { 
@@ -209,31 +212,34 @@
             to { opacity: 1; transform: translateY(0); } 
         }
 
+        /* PERBAIKAN: Ukuran font lebih kecil dan jarak antar baris lebih rapat */
         .message-text p {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            margin-bottom: 15px;
+            font-size: 0.95rem; /* Lebih kecil */
+            line-height: 1.5;   /* Lebih rapat */
+            margin-bottom: 10px; /* Jarak antar paragraf lebih dekat */
             color: #444;
         }
         
+        /* PERBAIKAN: Menyesuaikan teks bold */
         .message-text strong {
             color: #000;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             display: block;
-            margin-top: 20px;
-            margin-bottom: 20px;
+            margin-top: 15px;
+            margin-bottom: 15px;
         }
 
+        /* PERBAIKAN: Ikon sedikit lebih kecil */
         .message-icons {
-            font-size: 2rem;
-            letter-spacing: 10px;
+            font-size: 1.8rem;
+            letter-spacing: 8px;
         }
 
         /* Photo Slideshow */
         .photo-frame {
             position: relative; width: 100%; height: 300px;
             overflow: hidden; border-radius: 15px; margin-top: 30px;
-            background: #f0f0f0; /* Light gray background for frame */
+            background: #f0f0f0;
         }
         .slide {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -308,7 +314,7 @@
     </div>
 
     <div class="cake-container" id="cakeContainer">
-        <div style="text-align: center;">
+        <div style="text-align: center; width: 100%;">
             <div class="cake">
                 <div class="candles">
                     <div class="candle"><div class="flame"></div></div>
