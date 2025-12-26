@@ -11,6 +11,58 @@
             box-sizing: border-box;
         }
 
+        /* Desktop Warning */
+        .desktop-warning {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            z-index: 99999;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .desktop-warning-content {
+            background: white;
+            padding: 60px 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 600px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .desktop-warning-content h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .desktop-warning-content p {
+            font-size: 24px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .desktop-warning-content .icon {
+            font-size: 120px;
+            margin-bottom: 30px;
+        }
+
+        @media (min-width: 769px) {
+            .desktop-warning {
+                display: flex !important;
+            }
+            
+            body > *:not(.desktop-warning) {
+                display: none !important;
+            }
+        }
+
         body {
             font-family: 'Arial', sans-serif;
             background: #1a1a2e;
@@ -627,20 +679,21 @@
 
         .btn {
             padding: 16px 32px;
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.25);
             backdrop-filter: blur(10px);
             color: white;
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.5);
             border-radius: 50px;
             cursor: pointer;
             font-size: 16px;
             font-weight: 600;
             transition: all 0.3s ease;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 32px rgba(255, 255, 255, 0.1);
             opacity: 0;
             transform: scale(0.8);
             letter-spacing: 0.5px;
             visibility: hidden;
+            display: inline-block;
         }
 
         .btn.show {
@@ -900,6 +953,16 @@
     </style>
 </head>
 <body>
+    <!-- Desktop Warning -->
+    <div class="desktop-warning">
+        <div class="desktop-warning-content">
+            <div class="icon">📱</div>
+            <h1>Oops!</h1>
+            <p>Halaman ini hanya dapat dibuka di perangkat mobile (HP).</p>
+            <p>Silakan buka di smartphone Anda untuk pengalaman terbaik! 🎉</p>
+        </div>
+    </div>
+
     <audio id="bgMusic" loop>
         <source src="musik.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
@@ -1019,7 +1082,7 @@
 
     <!-- Final Message -->
     <div class="final-message" id="finalMessage">
-        <h1>HBD Kak Iyak 🎉 - Joni</h1>
+        <h1>HBD Kak Iyak 🎉<br>- Joni</h1>
     </div>
 
     <!-- Controls -->
