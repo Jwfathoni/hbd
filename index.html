@@ -10,234 +10,258 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            background-color: #000; /* Awal Gelap Gulita */
+            background-color: #1a1a2e; /* Awal Gelap */
             font-family: 'Poppins', sans-serif;
-            color: #fff;
             min-height: 100vh;
             overflow-x: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             position: relative;
-            transition: background 1s ease;
+            transition: background 1.5s ease;
         }
 
-        /* === 1. BACKGROUND GRADIENT (Hidden Initially) === */
-        .bg-gradient {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); /* Magic Blue Theme */
-            opacity: 0;
-            transition: opacity 2s ease;
-            z-index: -2;
-        }
-        .bg-gradient.visible { opacity: 1; }
-
-        /* === 2. STARS (Hidden Initially) === */
-        .stars {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 2s ease;
-        }
-        .stars.visible { opacity: 1; }
-        
-        .star {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            animation: twinkle var(--duration) infinite ease-in-out;
-        }
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.2; transform: scale(0.8); }
-            50% { opacity: 1; transform: scale(1.2); }
+        /* Background Gradient Baru (Hidden Initially) */
+        body.lights-on {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
 
-        /* === 3. BULBS (From Code #1) === */
+        /* === 1. LAMPU (New Assets) === */
         .lights-container {
-            position: absolute;
+            position: fixed;
             top: 0; width: 100%;
-            display: flex; justify-content: center; gap: 20px;
-            padding-top: 10px;
+            display: flex; justify-content: space-around;
+            padding: 20px;
+            z-index: 10;
+            pointer-events: none;
             opacity: 0;
             transition: opacity 1s;
-            pointer-events: none;
         }
         .lights-container.visible { opacity: 1; }
 
-        .bulb {
-            width: 30px; height: 30px;
-            border-radius: 50%;
-            background: var(--color);
+        .light-bulb {
+            width: 50px; height: 50px;
             position: relative;
-            opacity: 0.3;
-            animation: swing 3s ease-in-out infinite alternate;
+            animation: swing 3s ease-in-out infinite;
         }
-        .bulb::before {
-            content: ''; position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
-            width: 10px; height: 10px; background: #333;
+        /* Stagger animation */
+        .light-bulb:nth-child(2) { animation-delay: 0.5s; }
+        .light-bulb:nth-child(3) { animation-delay: 1s; }
+        .light-bulb:nth-child(4) { animation-delay: 1.5s; }
+        .light-bulb:nth-child(5) { animation-delay: 2s; }
+        .light-bulb:nth-child(6) { animation-delay: 2.5s; }
+
+        .bulb {
+            width: 40px; height: 50px;
+            background: radial-gradient(circle at 30% 30%, #fff, var(--bulb-color));
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            position: relative;
+            box-shadow: 0 0 20px var(--bulb-color), 0 0 40px var(--bulb-color);
+            opacity: 0;
+            transition: opacity 1s;
         }
+
         .bulb.on {
             opacity: 1;
-            box-shadow: 0 0 15px var(--color), 0 0 30px var(--color);
+            animation: glow 2s ease-in-out infinite;
         }
-        @keyframes swing { from { transform: rotate(-5deg); } to { transform: rotate(5deg); } }
 
-        /* === TITLE === */
-        .title-container {
-            margin-top: 100px;
+        .bulb::before {
+            content: ''; position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+            width: 20px; height: 10px; background: #666; border-radius: 5px 5px 0 0;
+        }
+        .bulb::after {
+            content: ''; position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
+            width: 2px; height: 20px; background: #444;
+        }
+
+        @keyframes swing { 0%, 100% { transform: rotate(-5deg); } 50% { transform: rotate(5deg); } }
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px var(--bulb-color), 0 0 40px var(--bulb-color); }
+            50% { box-shadow: 0 0 30px var(--bulb-color), 0 0 60px var(--bulb-color); }
+        }
+
+        /* === 2. BANNER (New Assets) === */
+        .banner-container {
             text-align: center;
+            margin-top: 130px;
             opacity: 0;
-            transform: translateY(20px);
-            transition: all 1.5s ease;
-            z-index: 10;
-        }
-        .title-container.visible { opacity: 1; transform: translateY(0); }
-        
-        .title {
-            font-family: 'Dancing Script', cursive;
-            font-size: 3rem;
-            color: #FFD700;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-        }
-
-        /* === 4. CAKE (From Code #1) === */
-        .cake-container {
-            margin-top: 50px;
-            position: relative;
-            opacity: 0;
-            transform: scale(0.8);
+            transform: translateY(-50px);
             transition: all 1s ease;
-            display: none; /* Hidden strictly */
-        }
-        .cake-container.visible { opacity: 1; transform: scale(1); display: block; }
-
-        .cake { position: relative; width: 200px; margin: 0 auto; }
-        .cake-layer {
-            width: 100%; height: 50px;
-            background: linear-gradient(to right, #8B4513, #A0522D, #8B4513);
-            border-radius: 10px; margin-bottom: 5px;
             position: relative;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            z-index: 5;
         }
-        .cake-layer::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 10px;
-            background: #FFE4E1; border-radius: 10px 10px 0 0;
-        }
-        .layer-2 { width: 85%; margin: 0 auto 5px; }
-        .layer-3 { width: 70%; margin: 0 auto; }
-        
-        .candles {
-            position: absolute; top: -35px; left: 50%; transform: translateX(-50%);
-            display: flex; gap: 10px;
-        }
-        .candle {
-            width: 10px; height: 35px;
-            background: linear-gradient(180deg, #FF69B4, #C71585);
-            border-radius: 5px; position: relative;
-        }
-        .flame {
-            position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
-            width: 15px; height: 20px;
-            background: orange; border-radius: 50% 50% 20% 20%;
-            box-shadow: 0 0 10px orange;
-            animation: flicker 0.3s infinite;
-            display: none; /* Mati dulu */
-        }
-        .flame.lit { display: block; }
-        @keyframes flicker { 0%,100% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.1); } }
+        .banner-container.visible { opacity: 1; transform: translateY(0); }
 
-        /* === 5. LIQUID GLASS MESSAGE === */
-        .glass-box {
-            margin-top: 40px;
-            width: 90%;
-            max-width: 600px;
-            padding: 30px;
+        .banner {
+            display: inline-block;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 20px 40px;
             border-radius: 20px;
-            /* Liquid Glass Effect */
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            
-            text-align: center;
-            opacity: 0;
-            transform: translateY(30px);
-            display: none;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        
+        .banner h1 {
+            color: white; font-family: 'Dancing Script', cursive;
+            font-size: 3rem; margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        .banner h2 {
+            color: white; font-size: 1.2rem; margin-top: 5px; font-weight: 300;
+        }
+
+        .banner::before, .banner::after {
+            content: '🎈'; position: absolute; font-size: 30px;
+            animation: float 3s ease-in-out infinite;
+        }
+        .banner::before { left: 10px; top: 50%; transform: translateY(-50%); }
+        .banner::after { right: 10px; top: 50%; transform: translateY(-50%); animation-delay: 1.5s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(-50%) rotate(-5deg); }
+            50% { transform: translateY(-60%) rotate(5deg); }
+        }
+
+        /* === 3. CAKE (New Assets) === */
+        .cake-container {
+            display: flex; justify-content: center; align-items: center;
+            margin-top: 50px;
+            opacity: 0; transform: scale(0);
             transition: all 1s ease;
         }
-        .glass-box.visible { display: block; animation: floatUp 1s forwards; }
-        
-        @keyframes floatUp { to { opacity: 1; transform: translateY(0); } }
+        .cake-container.visible { opacity: 1; transform: scale(1); }
 
-        .message-text { font-size: 1rem; line-height: 1.6; margin-bottom: 20px; }
+        .cake { position: relative; width: 250px; margin-bottom: 20px; }
 
-        /* === PHOTO SLIDESHOW (Right to Left) === */
-        .photo-frame {
-            position: relative;
-            width: 100%;
-            height: 300px; /* Tinggi area foto */
-            overflow: hidden;
-            border-radius: 15px;
-            margin-top: 20px;
-            background: rgba(0,0,0,0.2);
-        }
-
-        .slide {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            opacity: 0;
-            transform: translateX(100%); /* Mulai dari kanan */
-            transition: all 1s ease-in-out;
-        }
-
-        .slide.active { opacity: 1; transform: translateX(0); } /* Masuk ke tengah */
-        .slide.exit { opacity: 0; transform: translateX(-100%); } /* Keluar ke kiri */
-
-        .slide img {
-            max-width: 100%; max-height: 220px;
-            border-radius: 10px;
-            border: 3px solid white;
+        .cake-layer {
+            width: 100%; height: 60px;
+            background: linear-gradient(135deg, #8B4513 0%, #A0522D 50%, #8B4513 100%);
+            border-radius: 10px; position: relative; margin-bottom: 5px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
+        .cake-layer::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 15px;
+            background: linear-gradient(135deg, #FFE4E1 0%, #FFF0F5 50%, #FFE4E1 100%);
+            border-radius: 10px 10px 0 0;
+        }
+        .cake-layer::after {
+            content: ''; position: absolute; top: 15px; left: 10%; right: 10%; height: 35px;
+            background: repeating-linear-gradient(90deg, #D2691E 0px, #D2691E 20px, #8B4513 20px, #8B4513 40px);
+            opacity: 0.6;
+        }
+        .cake-layer-2 { width: 80%; margin: 0 auto 5px; }
+        .cake-layer-3 { width: 60%; margin: 0 auto; }
+
+        .cake-plate {
+            width: 300px; height: 15px;
+            background: linear-gradient(135deg, #E8E8E8, #D3D3D3);
+            border-radius: 50%; margin: 0 auto;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+
+        .candles {
+            position: absolute; top: -50px; left: 50%; transform: translateX(-50%);
+            display: flex; gap: 15px;
+        }
+        .candle {
+            width: 10px; height: 50px;
+            background: linear-gradient(135deg, #FF69B4, #FF1493);
+            border-radius: 5px 5px 0 0; position: relative;
+        }
+        .flame {
+            position: absolute; top: -25px; left: 50%; transform: translateX(-50%);
+            width: 20px; height: 30px;
+            background: radial-gradient(ellipse at center, #FFF 0%, #FFFF00 30%, #FFA500 60%, transparent 100%);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            opacity: 0;
+            animation: flicker 0.5s ease-in-out infinite;
+        }
+        .flame.lit { opacity: 1; }
         
-        .caption { margin-top: 10px; font-style: italic; font-size: 0.9rem; color: #feca57; }
+        @keyframes flicker {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.1); }
+        }
+
+        /* === 4. KONFETI (New Assets) === */
+        .confetti {
+            position: fixed; width: 10px; height: 10px;
+            background: var(--confetti-color);
+            top: -10px; z-index: 1000;
+            animation: fall 3s linear forwards;
+        }
+        @keyframes fall {
+            to { transform: translateY(105vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* === 5. LIQUID GLASS MESSAGE (From Previous Code) === */
+        .glass-box {
+            margin: 40px auto 100px;
+            width: 90%; max-width: 600px;
+            padding: 30px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            text-align: center;
+            opacity: 0; transform: translateY(30px);
+            display: none; transition: all 1s ease;
+            color: #fff;
+        }
+        .glass-box.visible { display: block; animation: floatUp 1s forwards; }
+        @keyframes floatUp { to { opacity: 1; transform: translateY(0); } }
+
+        .message-text p { font-size: 1.1rem; line-height: 1.6; margin-bottom: 10px; color: #fff; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); }
+
+        /* Photo Slideshow */
+        .photo-frame {
+            position: relative; width: 100%; height: 300px;
+            overflow: hidden; border-radius: 15px; margin-top: 20px;
+            background: rgba(0,0,0,0.1);
+        }
+        .slide {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            opacity: 0; transform: translateX(100%); transition: all 1s ease-in-out;
+        }
+        .slide.active { opacity: 1; transform: translateX(0); }
+        .slide.exit { opacity: 0; transform: translateX(-100%); }
+        .slide img {
+            max-width: 95%; max-height: 220px;
+            border-radius: 10px; border: 3px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .caption { margin-top: 10px; font-style: italic; font-size: 0.9rem; color: #fff; text-shadow: 1px 1px 2px black; }
 
         /* === CONTROLS === */
         .controls {
-            position: fixed; bottom: 30px; left: 0; width: 100%;
+            position: fixed; bottom: 20px; left: 0; width: 100%;
             display: flex; justify-content: center; z-index: 100;
+            pointer-events: none; /* Supaya area kosong tembus klik */
         }
-
-        .btn {
-            background: rgba(255,255,255,0.2);
-            border: 1px solid white;
-            color: white;
-            padding: 12px 25px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 1rem;
-            backdrop-filter: blur(5px);
-            transition: all 0.3s;
-            display: none; /* Hidden logic handled by JS */
-        }
-        .btn.show { display: block; animation: popBtn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .btn:hover { background: white; color: #333; transform: scale(1.05); }
-
-        @keyframes popBtn { from { transform: scale(0); } to { transform: scale(1); } }
         
-        /* Media Query Desktop */
-        @media (min-width: 768px) {
-            .title { font-size: 4rem; }
-            .cake { transform: scale(1.5); margin-bottom: 50px; }
-            .photo-frame { height: 350px; }
-            .slide img { max-height: 280px; }
+        .btn {
+            pointer-events: auto;
+            background: white; color: #764ba2;
+            padding: 12px 30px; border-radius: 50px; border: none;
+            font-size: 1rem; font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            cursor: pointer; transition: all 0.3s;
+            display: none; opacity: 0; transform: scale(0.8);
         }
+        .btn.show { display: block; animation: popBtn 0.5s forwards; }
+        .btn:hover { transform: scale(1.05); box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+        @keyframes popBtn { to { opacity: 1; transform: scale(1); } }
 
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .banner h1 { font-size: 2rem; }
+            .cake { transform: scale(0.8); margin-bottom: 0; }
+            .cake-plate { width: 240px; }
+            .light-bulb { width: 35px; height: 35px; }
+            .bulb { width: 30px; height: 40px; }
+            .glass-box { width: 95%; padding: 20px; }
+        }
     </style>
 </head>
 <body>
@@ -246,34 +270,37 @@
         <source src="musik.mp3" type="audio/mpeg">
     </audio>
 
-    <div class="bg-gradient" id="bgGradient"></div>
-    <div class="stars" id="starsContainer"></div>
-
-    <div class="lights-container" id="lights">
-        <div class="bulb" style="--color:#ff7675"></div>
-        <div class="bulb" style="--color:#ffeaa7"></div>
-        <div class="bulb" style="--color:#55efc4"></div>
-        <div class="bulb" style="--color:#74b9ff"></div>
-        <div class="bulb" style="--color:#fd79a8"></div>
-        <div class="bulb" style="--color:#a29bfe"></div>
+    <div class="lights-container" id="lightsContainer">
+        <div class="light-bulb"><div class="bulb" style="--bulb-color: #FFD700;"></div></div>
+        <div class="light-bulb"><div class="bulb" style="--bulb-color: #FF6B6B;"></div></div>
+        <div class="light-bulb"><div class="bulb" style="--bulb-color: #4ECDC4;"></div></div>
+        <div class="light-bulb"><div class="bulb" style="--bulb-color: #95E1D3;"></div></div>
+        <div class="light-bulb"><div class="bulb" style="--bulb-color: #F38181;"></div></div>
+        <div class="light-bulb"><div class="bulb" style="--bulb-color: #AA96DA;"></div></div>
     </div>
 
-    <div class="title-container" id="mainTitle">
-        <h1 class="title">Happy Birthday</h1>
-        <h2 style="font-weight: 300; letter-spacing: 2px;">Silvia Mona Fitri</h2>
+    <div class="banner-container" id="bannerContainer">
+        <div class="banner">
+            <h1>Happy Birthday</h1>
+            <h2>Silvia Mona Fitri</h2>
+        </div>
     </div>
 
-    <div class="cake-container" id="cake">
-        <div class="cake">
-            <div class="candles">
-                <div class="candle"><div class="flame"></div></div>
-                <div class="candle"><div class="flame"></div></div>
-                <div class="candle"><div class="flame"></div></div>
-                <div class="candle"><div class="flame"></div></div>
+    <div class="cake-container" id="cakeContainer">
+        <div style="text-align: center;">
+            <div class="cake">
+                <div class="candles">
+                    <div class="candle"><div class="flame"></div></div>
+                    <div class="candle"><div class="flame"></div></div>
+                    <div class="candle"><div class="flame"></div></div>
+                    <div class="candle"><div class="flame"></div></div>
+                    <div class="candle"><div class="flame"></div></div>
+                </div>
+                <div class="cake-layer cake-layer-3"></div>
+                <div class="cake-layer cake-layer-2"></div>
+                <div class="cake-layer"></div>
             </div>
-            <div class="cake-layer layer-3"></div>
-            <div class="cake-layer layer-2"></div>
-            <div class="cake-layer"></div>
+            <div class="cake-plate"></div>
         </div>
     </div>
 
@@ -281,94 +308,88 @@
         <div class="message-text">
             <p><strong>Dearest Silvia,</strong></p>
             <p>Selamat ulang tahun! 🎉</p>
-            <p>Semoga di usia yang baru ini, kebahagiaan selalu menyertaimu. Teruslah bersinar dan menjadi inspirasi bagi orang di sekitarmu.</p>
-            <p>May all your dreams come true.</p>
-            <p style="margin-top:10px;"><em>- Joni</em></p>
+            <p>Di hari spesial ini, semoga kebahagiaan selalu menyertaimu. Teruslah bersinar seperti bintang dan menjadi inspirasi bagi semua orang.</p>
+            <p><em>May all your wishes come true!</em></p>
+            <p style="margin-top:10px; font-size:0.9rem;">- Joni</p>
         </div>
         
-        <div class="photo-frame" id="photoFrame">
+        <div class="photo-frame">
             <div class="slide active">
                 <img src="foto/f1.jpg" onerror="this.src='https://via.placeholder.com/300?text=Foto+1'">
-                <div class="caption">Momen indah kita bersama ✨</div>
+                <div class="caption">Kenangan Indah ✨</div>
             </div>
             <div class="slide">
                 <img src="foto/f2.jpg" onerror="this.src='https://via.placeholder.com/300?text=Foto+2'">
-                <div class="caption">Senyummu yang selalu ceria 😊</div>
+                <div class="caption">Senyum Manis 😊</div>
             </div>
             <div class="slide">
                 <img src="foto/f3.jpg" onerror="this.src='https://via.placeholder.com/300?text=Foto+3'">
-                <div class="caption">Kenangan yang tak terlupakan 🎈</div>
+                <div class="caption">Momen Spesial 🎈</div>
             </div>
             <div class="slide">
                 <img src="foto/f4.jpg" onerror="this.src='https://via.placeholder.com/300?text=Foto+4'">
-                <div class="caption">Happy Birthday Silvia! 🎂</div>
+                <div class="caption">Happy Birthday! 🎂</div>
             </div>
         </div>
     </div>
 
     <div class="controls">
         <button class="btn show" id="btn1" onclick="action1()">Nyalakan Lampu 💡</button>
-        <button class="btn" id="btn2" onclick="action2()">Berikan Bintang ✨</button>
-        <button class="btn" id="btn3" onclick="action3()">Pasang Dekorasi 🎉</button>
+        <button class="btn" id="btn2" onclick="action2()">Pasang Banner 🎉</button>
+        <button class="btn" id="btn3" onclick="action3()">Sebar Konfeti 🎊</button>
         <button class="btn" id="btn4" onclick="action4()">Keluarkan Kue 🎂</button>
         <button class="btn" id="btn5" onclick="action5()">Nyalakan Lilin 🕯️</button>
-        <button class="btn" id="btn6" onclick="action6()">Lihat Pesan 💌</button>
+        <button class="btn" id="btn6" onclick="action6()">Baca Pesan 💌</button>
     </div>
 
     <script>
-        // === ASSETS & ELEMENTS ===
+        // === LOGIC ===
         const audio = document.getElementById('bgMusic');
-        
-        // Fungsi pembantu untuk ganti tombol
+
         function switchBtn(currentId, nextId) {
-            document.getElementById(currentId).classList.remove('show');
-            document.getElementById(currentId).style.display = 'none';
-            if(nextId) {
-                setTimeout(() => {
-                    document.getElementById(nextId).classList.add('show');
-                }, 500);
-            }
+            const curr = document.getElementById(currentId);
+            curr.style.animation = "none"; // Stop animation
+            curr.style.opacity = "0";
+            setTimeout(() => {
+                curr.style.display = 'none';
+                if(nextId) document.getElementById(nextId).classList.add('show');
+            }, 300);
         }
 
-        // --- STEP 1: BACKGROUND ---
+        // 1. Lampu & Background
         function action1() {
-            document.getElementById('bgGradient').classList.add('visible');
-            audio.play().catch(e => console.log("Audio perlu interaksi"));
-            switchBtn('btn1', 'btn2');
-        }
-
-        // --- STEP 2: BINTANG ---
-        function action2() {
-            createStars();
-            document.getElementById('starsContainer').classList.add('visible');
-            switchBtn('btn2', 'btn3');
-        }
-
-        // --- STEP 3: LAMPU GANTUNG & JUDUL ---
-        function action3() {
-            document.getElementById('lights').classList.add('visible');
+            document.body.classList.add('lights-on'); // Background Gradient
+            document.getElementById('lightsContainer').classList.add('visible'); // Show Container
             
-            // Efek lampu nyala satu per satu
+            // Nyalakan lampu satu per satu
             const bulbs = document.querySelectorAll('.bulb');
             bulbs.forEach((b, i) => {
                 setTimeout(() => b.classList.add('on'), i * 200);
             });
 
-            document.getElementById('mainTitle').classList.add('visible');
+            audio.play().catch(e => console.log("Audio perlu interaksi user"));
+            switchBtn('btn1', 'btn2');
+        }
+
+        // 2. Banner
+        function action2() {
+            document.getElementById('bannerContainer').classList.add('visible');
+            switchBtn('btn2', 'btn3');
+        }
+
+        // 3. Konfeti
+        function action3() {
+            createConfetti();
             switchBtn('btn3', 'btn4');
         }
 
-        // --- STEP 4: KUE ---
+        // 4. Kue
         function action4() {
-            document.getElementById('cake').classList.add('visible');
-            // Scroll sedikit ke bawah jika di HP
-            if(window.innerWidth < 768) {
-                window.scrollBy({top: 100, behavior: 'smooth'});
-            }
+            document.getElementById('cakeContainer').classList.add('visible');
             switchBtn('btn4', 'btn5');
         }
 
-        // --- STEP 5: LILIN ---
+        // 5. Lilin
         function action5() {
             const flames = document.querySelectorAll('.flame');
             flames.forEach((f, i) => {
@@ -377,60 +398,47 @@
             switchBtn('btn5', 'btn6');
         }
 
-        // --- STEP 6: PESAN & FOTO ---
+        // 6. Pesan
         function action6() {
             const glass = document.getElementById('glassMessage');
             glass.classList.add('visible');
-            switchBtn('btn6', null); // Tidak ada tombol lagi
+            switchBtn('btn6', null);
             
-            // Scroll ke pesan
             setTimeout(() => {
                 glass.scrollIntoView({behavior: 'smooth', block: 'center'});
-                startSlideshow(); // Mulai slideshow foto
+                startSlideshow();
             }, 500);
         }
 
-        // --- LOGIC BINTANG ---
-        function createStars() {
-            const container = document.getElementById('starsContainer');
-            for(let i=0; i<50; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                const size = Math.random() * 3 + 1;
-                star.style.width = size + 'px';
-                star.style.height = size + 'px';
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                star.style.setProperty('--duration', (Math.random()*3+2)+'s');
-                container.appendChild(star);
+        // Helper: Confetti
+        function createConfetti() {
+            const colors = ['#FFD700', '#FF6B6B', '#4ECDC4', '#95E1D3', '#F38181', '#AA96DA'];
+            for (let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.setProperty('--confetti-color', colors[Math.floor(Math.random() * colors.length)]);
+                    confetti.style.animationDelay = Math.random() * 2 + 's';
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 4000);
+                }, i * 30);
             }
         }
 
-        // --- LOGIC SLIDESHOW (KANAN KE KIRI) ---
+        // Helper: Slideshow
         function startSlideshow() {
             const slides = document.querySelectorAll('.slide');
             let current = 0;
-
             setInterval(() => {
-                // Slide saat ini keluar ke kiri
                 slides[current].classList.remove('active');
                 slides[current].classList.add('exit');
-
-                // Hitung index selanjutnya
                 let next = (current + 1) % slides.length;
-
-                // Reset slide selanjutnya supaya siap masuk dari kanan (hapus class exit)
                 slides[next].classList.remove('exit');
-                
-                // Sedikit delay agar transisi CSS lancar
-                setTimeout(() => {
-                    slides[next].classList.add('active');
-                }, 50);
-
+                setTimeout(() => slides[next].classList.add('active'), 50);
                 current = next;
-            }, 5000); // Ganti setiap 5 detik
+            }, 5000);
         }
-
     </script>
 </body>
 </html>
