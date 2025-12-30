@@ -1,493 +1,145 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Happy Birthday Silvia</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>
-        /* === BASE STYLE === */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            background-color: #1a1a2e; /* Awal Gelap */
-            font-family: 'Poppins', sans-serif;
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-            transition: background 1.5s ease;
-        }
+  <meta charset="UTF-8">
+  <title>Tabungan Lebaran 2026</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      margin: 0;
+      padding: 20px;
+      color: #fff;
+    }
 
-        /* Background Gradient (Saat lampu nyala) */
-        body.lights-on {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
+    .container {
+      max-width: 900px;
+      margin: auto;
+    }
 
-        /* === 1. LAMPU === */
-        .lights-container {
-            position: fixed;
-            top: 0; width: 100%;
-            display: flex; justify-content: space-around;
-            padding: 20px;
-            z-index: 10; 
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 1s;
-        }
-        .lights-container.visible { opacity: 1; }
+    h1 {
+      text-align: center;
+      margin-bottom: 5px;
+    }
 
-        .light-bulb {
-            width: 50px; height: 50px;
-            position: relative;
-            animation: swing 3s ease-in-out infinite;
-        }
-        .light-bulb:nth-child(2) { animation-delay: 0.5s; }
-        .light-bulb:nth-child(3) { animation-delay: 1s; }
-        .light-bulb:nth-child(4) { animation-delay: 1.5s; }
-        .light-bulb:nth-child(5) { animation-delay: 2s; }
-        .light-bulb:nth-child(6) { animation-delay: 2.5s; }
+    .subtitle {
+      text-align: center;
+      opacity: 0.9;
+      margin-bottom: 30px;
+    }
 
-        .bulb {
-            width: 40px; height: 50px;
-            background: radial-gradient(circle at 30% 30%, #fff, var(--bulb-color));
-            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-            position: relative;
-            box-shadow: 0 0 20px var(--bulb-color), 0 0 40px var(--bulb-color);
-            opacity: 0;
-            transition: opacity 1s;
-        }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
 
-        .bulb.on {
-            opacity: 1;
-            animation: glow 2s ease-in-out infinite;
-        }
-        
-        .bulb::before {
-            content: ''; position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
-            width: 20px; height: 10px; background: #666; border-radius: 5px 5px 0 0;
-        }
-        .bulb::after {
-            content: ''; position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
-            width: 2px; height: 20px; background: #444;
-        }
+    .card {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      text-align: center;
+    }
 
-        @keyframes swing { 0%, 100% { transform: rotate(-5deg); } 50% { transform: rotate(5deg); } }
-        @keyframes glow {
-            0%, 100% { box-shadow: 0 0 20px var(--bulb-color), 0 0 40px var(--bulb-color); }
-            50% { box-shadow: 0 0 30px var(--bulb-color), 0 0 60px var(--bulb-color); }
-        }
+    .card h2 {
+      margin: 0;
+      font-size: 18px;
+      opacity: 0.9;
+    }
 
-        /* === 2. BANNER (KEMBALI KE STYLE KODING PERTAMA) === */
-        .banner-container {
-            text-align: center;
-            margin-top: 130px;
-            opacity: 0;
-            transform: translateY(-50px);
-            transition: all 1s ease;
-            position: relative;
-            z-index: 5;
-            width: 100%;
-        }
-        .banner-container.visible { opacity: 1; transform: translateY(0); }
+    .card p {
+      font-size: 26px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
 
-        .banner {
-            display: inline-block;
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            padding: 20px 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-            position: relative;
-            overflow: hidden;
-            max-width: 90%;
-        }
+    .info {
+      margin-top: 30px;
+      background: rgba(255, 255, 255, 0.12);
+      padding: 20px;
+      border-radius: 15px;
+      line-height: 1.6;
+    }
 
-        .banner h1 {
-            color: white;
-            font-size: clamp(1.2rem, 5vw, 2rem); /* Responsive Font */
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
-            letter-spacing: 1px;
-            margin: 0;
-            line-height: 1.4;
-            font-weight: bold;
-            font-family: 'Poppins', sans-serif;
-        }
+    .highlight {
+      font-weight: bold;
+      color: #ffeb3b;
+    }
 
-        /* Animasi Balon di Banner */
-        .banner::before,
-        .banner::after {
-            content: '🎈';
-            position: absolute;
-            font-size: 24px;
-            animation: float 3s ease-in-out infinite;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-
-        .banner::before { left: 10px; }
-        .banner::after { right: 10px; animation-delay: 1.5s; }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(-50%) rotate(-5deg); }
-            50% { transform: translateY(-60%) rotate(5deg); }
-        }
-
-        /* === 3. CAKE === */
-        .cake-container {
-            display: flex; justify-content: center; align-items: center;
-            margin-top: 50px;
-            opacity: 0; transform: scale(0);
-            transition: all 1s ease;
-        }
-        .cake-container.visible { opacity: 1; transform: scale(1); }
-
-        .cake { 
-            position: relative; 
-            width: 250px; 
-            margin: 0 auto 20px auto; 
-        }
-
-        .cake-layer {
-            width: 100%; height: 60px;
-            background: linear-gradient(135deg, #8B4513 0%, #A0522D 50%, #8B4513 100%);
-            border-radius: 10px; position: relative; margin-bottom: 5px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-        .cake-layer::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 15px;
-            background: linear-gradient(135deg, #FFE4E1 0%, #FFF0F5 50%, #FFE4E1 100%);
-            border-radius: 10px 10px 0 0;
-        }
-        .cake-layer::after {
-            content: ''; position: absolute; top: 15px; left: 10%; right: 10%; height: 35px;
-            background: repeating-linear-gradient(90deg, #D2691E 0px, #D2691E 20px, #8B4513 20px, #8B4513 40px);
-            opacity: 0.6;
-        }
-        .cake-layer-2 { width: 80%; margin: 0 auto 5px; }
-        .cake-layer-3 { width: 60%; margin: 0 auto; }
-
-        .cake-plate {
-            width: 300px; height: 15px;
-            background: linear-gradient(135deg, #E8E8E8, #D3D3D3);
-            border-radius: 50%; margin: 0 auto;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-        }
-
-        .candles {
-            position: absolute; top: -50px; left: 50%; transform: translateX(-50%);
-            display: flex; gap: 15px;
-        }
-        .candle {
-            width: 10px; height: 50px;
-            background: linear-gradient(135deg, #FF69B4, #FF1493);
-            border-radius: 5px 5px 0 0; position: relative;
-        }
-        .flame {
-            position: absolute; top: -25px; left: 50%; transform: translateX(-50%);
-            width: 20px; height: 30px;
-            background: radial-gradient(ellipse at center, #FFF 0%, #FFFF00 30%, #FFA500 60%, transparent 100%);
-            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-            opacity: 0;
-            animation: flicker 0.5s ease-in-out infinite;
-        }
-        .flame.lit { opacity: 1; }
-        
-        @keyframes flicker {
-            0%, 100% { transform: translateX(-50%) scale(1); }
-            50% { transform: translateX(-50%) scale(1.1); }
-        }
-
-        /* === 4. KONFETI === */
-        .confetti {
-            position: fixed; width: 10px; height: 10px;
-            background: var(--confetti-color);
-            top: -10px; z-index: 1000;
-            animation: fall 3s linear forwards;
-        }
-        @keyframes fall {
-            to { transform: translateY(105vh) rotate(360deg); opacity: 0; }
-        }
-
-        /* === 5. WHITE CARD MESSAGE (DIPERKECIL LAGI) === */
-        .message-card {
-            margin: 40px auto 100px;
-            width: 90%; max-width: 500px;
-            padding: 30px;
-            border-radius: 20px;
-            background: #ffffff;
-            color: #333333;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-            text-align: center;
-            opacity: 0; 
-            transform: translateY(30px);
-            display: none; 
-            transition: all 1s ease;
-            position: relative;
-            z-index: 50;
-        }
-
-        .message-card.visible { 
-            display: block; 
-            animation: floatUp 1s forwards; 
-        }
-
-        @keyframes floatUp { 
-            to { opacity: 1; transform: translateY(0); } 
-        }
-
-        /* TEXT DIPERKECIL SESUAI REQUEST */
-        .message-text p {
-            font-size: 0.85rem; /* Ukuran font diperkecil */
-            line-height: 1.4;   /* Jarak baris dirapatkan */
-            margin-bottom: 8px; /* Jarak antar paragraf */
-            color: #444;
-        }
-        
-        .message-text strong {
-            color: #000;
-            font-size: 1rem; /* Bold text juga disesuaikan */
-            display: block;
-            margin-top: 15px;
-            margin-bottom: 15px;
-        }
-
-        .message-icons {
-            font-size: 1.5rem;
-            letter-spacing: 5px;
-        }
-
-        /* Photo Slideshow */
-        .photo-frame {
-            position: relative; width: 100%; height: 300px;
-            overflow: hidden; border-radius: 15px; margin-top: 25px;
-            background: #f0f0f0;
-        }
-        .slide {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            opacity: 0; transform: translateX(100%); transition: all 1s ease-in-out;
-        }
-        .slide.active { opacity: 1; transform: translateX(0); }
-        .slide.exit { opacity: 0; transform: translateX(-100%); }
-        .slide img {
-            max-width: 90%; max-height: 220px;
-            border-radius: 10px; 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-        .caption { 
-            margin-top: 10px; 
-            font-style: italic; 
-            font-size: 0.8rem; 
-            color: #555; 
-        }
-
-        /* === CONTROLS === */
-        .controls {
-            position: fixed; bottom: 20px; left: 0; width: 100%;
-            display: flex; justify-content: center; z-index: 100;
-            pointer-events: none;
-        }
-        
-        .btn {
-            pointer-events: auto;
-            background: white; color: #764ba2;
-            padding: 12px 30px; border-radius: 50px; border: none;
-            font-size: 1rem; font-weight: bold;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            cursor: pointer; transition: all 0.3s;
-            display: none; opacity: 0; transform: scale(0.8);
-        }
-        .btn.show { display: block; animation: popBtn 0.5s forwards; }
-        .btn:hover { transform: scale(1.05); box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
-        @keyframes popBtn { to { opacity: 1; transform: scale(1); } }
-
-        /* Mobile Responsive */
-        @media (max-width: 768px) {
-            .cake { transform: scale(0.8); margin-bottom: 0; }
-            .cake-plate { width: 240px; }
-            .light-bulb { width: 35px; height: 35px; }
-            .bulb { width: 30px; height: 40px; }
-            .message-card { width: 95%; padding: 25px; margin-bottom: 80px; }
-        }
-    </style>
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 13px;
+      opacity: 0.8;
+    }
+  </style>
 </head>
 <body>
 
-    <audio id="bgMusic" loop>
-        <source src="musik.mp3" type="audio/mpeg">
-    </audio>
+<div class="container">
+  <h1>💰 Tabungan Lebaran 2026</h1>
+  <div class="subtitle">
+    Joni & Mona • Rp10.000 per hari per orang
+  </div>
 
-    <div class="lights-container" id="lightsContainer">
-        <div class="light-bulb"><div class="bulb" style="--bulb-color: #FFD700;"></div></div>
-        <div class="light-bulb"><div class="bulb" style="--bulb-color: #FF6B6B;"></div></div>
-        <div class="light-bulb"><div class="bulb" style="--bulb-color: #4ECDC4;"></div></div>
-        <div class="light-bulb"><div class="bulb" style="--bulb-color: #95E1D3;"></div></div>
-        <div class="light-bulb"><div class="bulb" style="--bulb-color: #F38181;"></div></div>
-        <div class="light-bulb"><div class="bulb" style="--bulb-color: #AA96DA;"></div></div>
+  <div class="cards">
+    <div class="card">
+      <h2>Total Hari Menabung</h2>
+      <p id="totalHari">0</p>
     </div>
 
-    <div class="banner-container" id="bannerContainer">
-        <div class="banner">
-            <h1>🎉 HAPPY BIRTHDAY 🎉<br>SILVIA MONA FITRI</h1>
-        </div>
+    <div class="card">
+      <h2>Total Joni</h2>
+      <p>Rp <span id="joni">0</span></p>
     </div>
 
-    <div class="cake-container" id="cakeContainer">
-        <div style="text-align: center; width: 100%;">
-            <div class="cake">
-                <div class="candles">
-                    <div class="candle"><div class="flame"></div></div>
-                    <div class="candle"><div class="flame"></div></div>
-                    <div class="candle"><div class="flame"></div></div>
-                    <div class="candle"><div class="flame"></div></div>
-                    <div class="candle"><div class="flame"></div></div>
-                </div>
-                <div class="cake-layer cake-layer-3"></div>
-                <div class="cake-layer cake-layer-2"></div>
-                <div class="cake-layer"></div>
-            </div>
-            <div class="cake-plate"></div>
-        </div>
+    <div class="card">
+      <h2>Total Mona</h2>
+      <p>Rp <span id="mona">0</span></p>
     </div>
 
-    <div class="message-card" id="messageBox">
-        <div class="message-text">
-            <p>Today is a special day...</p>
-            <p>A day to celebrate YOU!</p>
-            <p>May this year bring you joy, success, and countless blessings</p>
-            <p>May all your dreams come true</p>
-            <p>And may you always find reasons to smile</p>
-            
-            <strong>Wishing you the happiest birthday ever!</strong>
-            
-            <div class="message-icons">🎂🎈🎁🎉</div>
-        </div>
-        
-        <div class="photo-frame">
-            <div class="slide active">
-                <img src="foto/f1.jpg" onerror="this.src='https://via.placeholder.com/300?text=Memories'">
-                <div class="caption">Beautiful Memories ✨</div>
-            </div>
-            <div class="slide">
-                <img src="foto/f2.jpg" onerror="this.src='https://via.placeholder.com/300?text=Smile'">
-                <div class="caption">Your Beautiful Smile 😊</div>
-            </div>
-            <div class="slide">
-                <img src="foto/f3.jpg" onerror="this.src='https://via.placeholder.com/300?text=Joy'">
-                <div class="caption">Moments of Joy 🎈</div>
-            </div>
-            <div class="slide">
-                <img src="foto/f4.jpg" onerror="this.src='https://via.placeholder.com/300?text=HBD'">
-                <div class="caption">Special Day 🎂</div>
-            </div>
-        </div>
+    <div class="card">
+      <h2>Total Keseluruhan</h2>
+      <p>Rp <span id="total">0</span></p>
     </div>
+  </div>
 
-    <div class="controls">
-        <button class="btn show" id="btn1" onclick="action1()">Nyalakan Lampu 💡</button>
-        <button class="btn" id="btn2" onclick="action2()">Pasang Banner 🎉</button>
-        <button class="btn" id="btn3" onclick="action3()">Sebar Konfeti 🎊</button>
-        <button class="btn" id="btn4" onclick="action4()">Keluarkan Kue 🎂</button>
-        <button class="btn" id="btn5" onclick="action5()">Nyalakan Lilin 🕯️</button>
-        <button class="btn" id="btn6" onclick="action6()">Baca Pesan 💌</button>
-    </div>
+  <div class="info">
+    <p>
+      📅 Periode Menabung:<br>
+      <span class="highlight">26 Desember 2025</span> – 
+      <span class="highlight">20 Maret 2026 (Lebaran)</span>
+    </p>
+    <p>
+      💵 Tabungan Harian:<br>
+      Rp10.000 × 2 orang = <span class="highlight">Rp20.000 / hari</span>
+    </p>
+  </div>
 
-    <script>
-        // === LOGIC ===
-        const audio = document.getElementById('bgMusic');
+  <footer>
+    © 2025 – Tabungan Lebaran Keluarga
+  </footer>
+</div>
 
-        function switchBtn(currentId, nextId) {
-            const curr = document.getElementById(currentId);
-            curr.style.animation = "none";
-            curr.style.opacity = "0";
-            setTimeout(() => {
-                curr.style.display = 'none';
-                if(nextId) document.getElementById(nextId).classList.add('show');
-            }, 300);
-        }
+<script>
+  const mulai = new Date("2025-12-26");
+  const lebaran = new Date("2026-03-20");
+  const tabunganPerHari = 10000;
 
-        // 1. Lampu & Background
-        function action1() {
-            document.body.classList.add('lights-on');
-            document.getElementById('lightsContainer').classList.add('visible');
-            
-            const bulbs = document.querySelectorAll('.bulb');
-            bulbs.forEach((b, i) => {
-                setTimeout(() => b.classList.add('on'), i * 200);
-            });
+  const selisihHari = Math.floor(
+    (lebaran - mulai) / (1000 * 60 * 60 * 24)
+  ) + 1;
 
-            audio.play().catch(e => console.log("Audio perlu interaksi user"));
-            switchBtn('btn1', 'btn2');
-        }
+  const totalPerOrang = selisihHari * tabunganPerHari;
+  const totalKeseluruhan = totalPerOrang * 2;
 
-        // 2. Banner
-        function action2() {
-            document.getElementById('bannerContainer').classList.add('visible');
-            switchBtn('btn2', 'btn3');
-        }
+  document.getElementById("totalHari").textContent = selisihHari;
+  document.getElementById("joni").textContent = totalPerOrang.toLocaleString("id-ID");
+  document.getElementById("mona").textContent = totalPerOrang.toLocaleString("id-ID");
+  document.getElementById("total").textContent = totalKeseluruhan.toLocaleString("id-ID");
+</script>
 
-        // 3. Konfeti
-        function action3() {
-            createConfetti();
-            switchBtn('btn3', 'btn4');
-        }
-
-        // 4. Kue
-        function action4() {
-            document.getElementById('cakeContainer').classList.add('visible');
-            switchBtn('btn4', 'btn5');
-        }
-
-        // 5. Lilin
-        function action5() {
-            const flames = document.querySelectorAll('.flame');
-            flames.forEach((f, i) => {
-                setTimeout(() => f.classList.add('lit'), i * 300);
-            });
-            switchBtn('btn5', 'btn6');
-        }
-
-        // 6. Pesan
-        function action6() {
-            const msgBox = document.getElementById('messageBox');
-            msgBox.classList.add('visible');
-            switchBtn('btn6', null);
-            
-            // Auto scroll ke pesan
-            setTimeout(() => {
-                msgBox.scrollIntoView({behavior: 'smooth', block: 'center'});
-                startSlideshow();
-            }, 500);
-        }
-
-        // Helper: Confetti
-        function createConfetti() {
-            const colors = ['#FFD700', '#FF6B6B', '#4ECDC4', '#95E1D3', '#F38181', '#AA96DA'];
-            for (let i = 0; i < 100; i++) {
-                setTimeout(() => {
-                    const confetti = document.createElement('div');
-                    confetti.className = 'confetti';
-                    confetti.style.left = Math.random() * 100 + '%';
-                    confetti.style.setProperty('--confetti-color', colors[Math.floor(Math.random() * colors.length)]);
-                    confetti.style.animationDelay = Math.random() * 2 + 's';
-                    document.body.appendChild(confetti);
-                    setTimeout(() => confetti.remove(), 4000);
-                }, i * 30);
-            }
-        }
-
-        // Helper: Slideshow
-        function startSlideshow() {
-            const slides = document.querySelectorAll('.slide');
-            let current = 0;
-            setInterval(() => {
-                slides[current].classList.remove('active');
-                slides[current].classList.add('exit');
-                let next = (current + 1) % slides.length;
-                slides[next].classList.remove('exit');
-                setTimeout(() => slides[next].classList.add('active'), 50);
-                current = next;
-            }, 5000);
-        }
-    </script>
 </body>
 </html>
