@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Tabungan Lebaran 2026</title>
+
+<style>
+body{
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg,#1d2671,#c33764);
+  color:#fff;
+  margin:0;
+  padding:20px;
+}
+
+.container{
+  max-width:1000px;
+  margin:auto;
+}
+
+h1{
+  text-align:center;
+}
+
+.card{
+  background:rgba(255,255,255,0.15);
+  padding:20px;
+  border-radius:15px;
+  margin-bottom:20px;
+}
+
+.summary{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:15px;
+}
+
+.summary div{
+  text-align:center;
+  font-size:18px;
+}
+
+.summary span{
+  font-size:24px;
+  font-weight:bold;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:15px;
+}
+
+th,td{
+  border:1px solid rgba(255,255,255,0.3);
+  padding:8px;
+  text-align:center;
+}
+
+th{
+  background:rgba(0,0,0,0.3);
+}
+
+input[type="checkbox"]{
+  transform:scale(1.3);
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<h1>💰 Tabungan Lebaran 2026</h1>
+<p style="text-align:center">Rp10.000 / orang / hari</p>
+
+<div class="card summary">
+  <div>Joni<br>Rp <span id="joni">0</span></div>
+  <div>Mona<br>Rp <span id="mona">0</span></div>
+  <div>Total<br>Rp <span id="total">0</span></div>
+</div>
+
+<div class="card">
+  <h3>📅 Daftar Hari Menabung</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Tanggal</th>
+        <th>Hari</th>
+        <th>Joni</th>
+        <th>Mona</th>
+      </tr>
+    </thead>
+    <tbody id="tabel"></tbody>
+  </table>
+</div>
+
+</div>
+
+<script>
+const mulai = new Date("2025-12-26");
+const akhir = new Date("2026-03-20");
+const perHari = 10000;
+
+let data = JSON.parse(localStorage.getItem("tabunganHarian")) || {};
+
+const tbody = document.getElementById("tabel");
+
+function namaHari(tgl){
+  return tgl.toLocaleDateString("id-ID",{weekday:"long"});
+}
+
+function render(){
+  tbody.innerHTML="";
+  let totalJoni=0, totalMona=0;
+
+  for(let d=new Date(mulai); d<=akhir; d.setDate(d.getDate()+1)){
+    const tanggal = d.toISOString().split("T")[0];
+    if(!data[tanggal]) data[tanggal]={joni:false,mona:false};
+
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${tanggal}</td>
+      <td>${namaHari(new Date(tanggal))}</td>
+      <td><input type="checkbox" ${data[tanggal].joni?"checked":""}
+          onchange="toggle('${tanggal}','joni')"></td>
+      <td><input type="checkbox" ${data[tanggal].mona?"checked":""}
+          onchange="toggle('${tanggal}','mona')"></td>
+    `;
+    tbody.appendChild(tr);
+
+    if(data[tanggal].joni) totalJoni+=perHari;
+    if(data[tanggal].mona) totalMona+=perHari;
+  }
+
+  document.getElementById("joni").textContent = totalJoni.toLocaleString("id-ID");
+  document.getElementById("mona").textContent = totalMona.toLocaleString("id-ID");
+  document.getElementById("total").textContent = (totalJoni+totalMona).toLocaleString("id-ID");
+
+  localStorage.setItem("tabunganHarian",JSON.stringify(data));
+}
+
+function toggle(tanggal,nama){
+  data[tanggal][nama] = !data[tanggal][nama];
+  render();
+}
+
+render();
+</script>
+
+</body>
+</html>
