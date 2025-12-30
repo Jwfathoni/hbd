@@ -5,35 +5,129 @@
 <title>Tabungan Liburan</title>
 
 <style>
+/* ===== RESET ===== */
+*{box-sizing:border-box}
+
+/* ===== BACKGROUND ===== */
 body{
-  font-family: Arial, sans-serif;
-  background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  font-family:'Segoe UI',sans-serif;
+  min-height:100vh;
+  margin:0;
+  background:linear-gradient(-45deg,#0f2027,#203a43,#2c5364,#1c92d2);
+  background-size:400% 400%;
+  animation:bg 15s ease infinite;
   color:#fff;
   padding:20px;
 }
-.container{max-width:900px;margin:auto}
+@keyframes bg{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+.container{
+  max-width:1000px;
+  margin:auto;
+}
+
+/* ===== GLASS CARD ===== */
 .card{
   background:rgba(255,255,255,0.15);
-  padding:20px;
-  border-radius:15px;
-  margin-bottom:20px;
+  backdrop-filter:blur(15px);
+  -webkit-backdrop-filter:blur(15px);
+  border-radius:18px;
+  padding:25px;
+  box-shadow:0 20px 40px rgba(0,0,0,.25);
+  margin-bottom:25px;
+  animation:fade .8s ease;
 }
-h1{text-align:center}
-input,button{
-  padding:10px;
-  border-radius:8px;
-  border:none;
+@keyframes fade{
+  from{opacity:0;transform:translateY(15px)}
+  to{opacity:1;transform:none}
 }
-button{cursor:pointer;font-weight:bold}
-table{width:100%;border-collapse:collapse}
-th,td{
-  border:1px solid rgba(255,255,255,0.3);
-  padding:8px;
+
+h1{
+  text-align:center;
+  margin-top:0;
+  font-weight:700;
+}
+
+/* ===== LOGIN ===== */
+#loginBox{
+  max-width:420px;
+  margin:80px auto;
   text-align:center;
 }
-.month-row{
-  background:rgba(0,0,0,0.4);
+
+input{
+  width:100%;
+  padding:14px;
+  border-radius:12px;
+  border:none;
+  margin:15px 0;
+  font-size:16px;
+  outline:none;
+}
+
+button{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  font-size:16px;
+  font-weight:700;
+  background:linear-gradient(135deg,#00c6ff,#0072ff);
+  color:white;
+  cursor:pointer;
+  transition:.3s;
+}
+button:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 25px rgba(0,114,255,.4);
+}
+
+#error{
+  color:#ffb3b3;
+  margin-top:10px;
+}
+
+/* ===== TABLE ===== */
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:15px;
+  font-size:14px;
+}
+
+th,td{
+  padding:10px;
+  border:1px solid rgba(255,255,255,.25);
+  text-align:center;
+}
+
+th{
+  background:rgba(0,0,0,.35);
+}
+
+tr:hover td{
+  background:rgba(255,255,255,.08);
+}
+
+.month-row td{
+  background:rgba(0,0,0,.45);
   font-weight:bold;
+  text-align:left;
+  padding-left:15px;
+}
+
+input[type="checkbox"]{
+  transform:scale(1.4);
+  cursor:pointer;
+}
+
+/* ===== MOBILE ===== */
+@media(max-width:600px){
+  table{font-size:12px}
 }
 </style>
 </head>
@@ -43,16 +137,19 @@ th,td{
 
 <!-- LOGIN -->
 <div class="card" id="loginBox">
-  <h1>🔐 Login Tabungan Liburan</h1>
-  <p>Password: <b>joni</b> atau <b>mona</b></p>
+  <h1>🏖️ Tabungan Liburan</h1>
+  <p>Masuk menggunakan password</p>
+  <p><b>joni</b> atau <b>mona</b></p>
+
   <input type="password" id="password" placeholder="Masukkan password">
   <button onclick="login()">Login</button>
-  <p id="error" style="color:#ff5252"></p>
+
+  <div id="error"></div>
 </div>
 
 <!-- APP -->
 <div class="card" id="app" style="display:none">
-  <h1>🏖️ Tabungan Liburan</h1>
+  <h1>📅 Tabungan Harian</h1>
 
   <table>
     <thead>
@@ -84,29 +181,24 @@ function namaBulan(d){
   return d.toLocaleDateString("id-ID",{month:"long",year:"numeric"});
 }
 
-// ===== LOGIN =====
 async function login(){
-  const pass = document.getElementById("password").value;
-  TOKEN = pass;
+  TOKEN = document.getElementById("password").value;
 
   try{
     const res = await fetch(WORKER_URL,{
-      headers:{ Authorization:`Bearer ${TOKEN}` }
+      headers:{Authorization:`Bearer ${TOKEN}`}
     });
-
     if(!res.ok) throw "fail";
 
+    data = await res.json();
     document.getElementById("loginBox").style.display="none";
     document.getElementById("app").style.display="block";
-
-    data = await res.json();
     render();
   }catch{
-    document.getElementById("error").textContent="Password salah!";
+    document.getElementById("error").textContent="❌ Password salah";
   }
 }
 
-// ===== SAVE =====
 async function saveData(){
   await fetch(WORKER_URL,{
     method:"POST",
@@ -119,31 +211,30 @@ async function saveData(){
 }
 
 function render(){
-  const tbody = document.getElementById("tabel");
+  const tbody=document.getElementById("tabel");
   tbody.innerHTML="";
-  let lastMonth="";
+  let last="";
 
   for(let d=new Date(mulai); d<=akhir; d.setDate(d.getDate()+1)){
-    const t = d.toISOString().split("T")[0];
-    const bulan = namaBulan(d);
+    const t=d.toISOString().split("T")[0];
+    const bulan=namaBulan(d);
 
-    if(bulan!==lastMonth){
-      tbody.innerHTML += `<tr class="month-row"><td colspan="4">📆 ${bulan}</td></tr>`;
-      lastMonth=bulan;
+    if(bulan!==last){
+      tbody.innerHTML+=`<tr class="month-row"><td colspan="4">📆 ${bulan}</td></tr>`;
+      last=bulan;
     }
 
     if(!data[t]) data[t]={joni:false,mona:false};
 
-    tbody.innerHTML += `
+    tbody.innerHTML+=`
       <tr>
         <td>${t}</td>
         <td>${namaHari(new Date(t))}</td>
         <td><input type="checkbox" ${data[t].joni?"checked":""}
-            onchange="toggle('${t}','joni')"></td>
+          onchange="toggle('${t}','joni')"></td>
         <td><input type="checkbox" ${data[t].mona?"checked":""}
-            onchange="toggle('${t}','mona')"></td>
-      </tr>
-    `;
+          onchange="toggle('${t}','mona')"></td>
+      </tr>`;
   }
 }
 
