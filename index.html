@@ -27,6 +27,80 @@ body{
   overflow-x:hidden;
 }
 
+/* Curved Loop Animation Background */
+.curved-text-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.curved-text-path {
+  position: absolute;
+  font-size: 120px;
+  font-weight: 900;
+  opacity: 0.08;
+  white-space: nowrap;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 8px;
+}
+
+.path-1 {
+  top: 15%;
+  left: -20%;
+  animation: curveLoop1 25s linear infinite;
+  transform: rotate(-5deg);
+}
+
+.path-2 {
+  top: 45%;
+  right: -20%;
+  animation: curveLoop2 30s linear infinite;
+  transform: rotate(5deg);
+}
+
+.path-3 {
+  bottom: 20%;
+  left: -15%;
+  animation: curveLoop3 28s linear infinite;
+  transform: rotate(-3deg);
+}
+
+@keyframes curveLoop1 {
+  0% {
+    transform: translateX(-100%) rotate(-5deg);
+  }
+  100% {
+    transform: translateX(100vw) rotate(-5deg);
+  }
+}
+
+@keyframes curveLoop2 {
+  0% {
+    transform: translateX(100%) rotate(5deg);
+  }
+  100% {
+    transform: translateX(-100vw) rotate(5deg);
+  }
+}
+
+@keyframes curveLoop3 {
+  0% {
+    transform: translateX(-100%) rotate(-3deg) translateY(0);
+  }
+  50% {
+    transform: translateX(50vw) rotate(-3deg) translateY(-30px);
+  }
+  100% {
+    transform: translateX(100vw) rotate(-3deg) translateY(0);
+  }
+}
+
 /* Animated background circles */
 body::before,body::after{
   content:'';
@@ -385,11 +459,23 @@ input[type="checkbox"]:hover{
   .sum-box .amount{font-size:22px}
   table{font-size:13px}
   th,td{padding:10px 6px}
+  
+  .curved-text-path {
+    font-size: 60px;
+  }
 }
 </style>
 </head>
 
 <body>
+
+<!-- Curved Text Animation Background -->
+<div class="curved-text-container">
+  <div class="curved-text-path path-1">LIBURAN ✈️ VACATION 🏖️ HOLIDAY 🌴</div>
+  <div class="curved-text-path path-2">SAVING 💰 TABUNGAN 💵 MONEY 🎯</div>
+  <div class="curved-text-path path-3">DREAM 🌟 IMPIAN ✨ TARGET 🎊</div>
+</div>
+
 <div class="container">
 
 <!-- LOGIN -->
