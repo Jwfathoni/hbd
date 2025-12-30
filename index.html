@@ -2,144 +2,389 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Tabungan Liburan</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tabungan Liburan - Joni & Mona</title>
 
 <style>
 :root{
-  --primary:#8f9bc6;
-  --secondary:#b7bddb;
-  --soft:#e6e8f0;
-  --cream:#f7edd7;
-  --glass:rgba(255,255,255,.35);
+  --primary:#667eea;
+  --secondary:#764ba2;
+  --accent:#f093fb;
+  --success:#4ade80;
+  --glass:rgba(255,255,255,.25);
+  --glass-border:rgba(255,255,255,.4);
 }
 
-/* RESET */
-*{box-sizing:border-box}
+*{box-sizing:border-box;margin:0;padding:0}
 
-/* BACKGROUND */
 body{
-  font-family:'Segoe UI',sans-serif;
+  font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
   min-height:100vh;
-  margin:0;
-  background:
-    url("https://i.imgur.com/2yaf2wb.png") no-repeat bottom right,
-    linear-gradient(180deg,var(--primary),var(--secondary),var(--cream));
-  background-size:260px,cover;
+  background:linear-gradient(135deg,#667eea 0%,#764ba2 50%,#f093fb 100%);
   color:#2c2c2c;
   padding:20px;
+  position:relative;
+  overflow-x:hidden;
+}
+
+/* Animated background circles */
+body::before,body::after{
+  content:'';
+  position:fixed;
+  border-radius:50%;
+  filter:blur(80px);
+  opacity:.3;
+  animation:float 20s infinite ease-in-out;
+  z-index:0;
+}
+
+body::before{
+  width:400px;
+  height:400px;
+  background:#f093fb;
+  top:-100px;
+  right:-100px;
+  animation-delay:-5s;
+}
+
+body::after{
+  width:500px;
+  height:500px;
+  background:#667eea;
+  bottom:-150px;
+  left:-150px;
+}
+
+@keyframes float{
+  0%,100%{transform:translate(0,0) scale(1)}
+  33%{transform:translate(30px,-30px) scale(1.1)}
+  66%{transform:translate(-20px,20px) scale(.9)}
 }
 
 .container{
-  max-width:1000px;
+  max-width:1100px;
   margin:auto;
+  position:relative;
+  z-index:1;
 }
 
 /* GLASS CARD */
 .card{
   background:var(--glass);
-  backdrop-filter:blur(16px);
-  border-radius:22px;
-  padding:25px;
-  box-shadow:0 20px 40px rgba(0,0,0,.15);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border:2px solid var(--glass-border);
+  border-radius:24px;
+  padding:28px;
+  box-shadow:0 25px 50px rgba(0,0,0,.2);
   margin-bottom:25px;
-  animation:fade .6s ease;
+  animation:fadeUp .6s ease;
 }
 
-@keyframes fade{
-  from{opacity:0;transform:translateY(12px)}
-  to{opacity:1}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
 }
 
 h1,h2{
   text-align:center;
-  margin:0 0 10px;
-  color:#2b2b2b;
+  color:#fff;
+  text-shadow:2px 2px 4px rgba(0,0,0,.2);
 }
+
+h1{font-size:32px;margin-bottom:8px}
+h2{font-size:24px;margin-bottom:18px}
 
 /* LOGIN */
 #loginBox{
-  max-width:420px;
-  margin:80px auto;
-  text-align:center;
+  max-width:440px;
+  margin:100px auto;
+  animation-delay:.2s;
 }
 
-input{
-  width:100%;
-  padding:14px;
-  border-radius:14px;
-  border:none;
-  margin:15px 0;
+#loginBox h1{
+  font-size:36px;
+  margin-bottom:12px;
+}
+
+#loginBox p{
+  color:#fff;
+  text-align:center;
+  margin-bottom:25px;
   font-size:16px;
-  background:#fff;
+  opacity:.95;
+}
+
+.input-group{
+  position:relative;
+  margin-bottom:20px;
+}
+
+.input-group input{
+  width:100%;
+  padding:16px 20px;
+  border-radius:16px;
+  border:2px solid rgba(255,255,255,.3);
+  font-size:16px;
+  background:rgba(255,255,255,.95);
+  transition:all .3s ease;
+  outline:none;
+}
+
+.input-group input:focus{
+  border-color:#667eea;
+  box-shadow:0 0 0 4px rgba(102,126,234,.2);
+  transform:translateY(-2px);
 }
 
 button{
   width:100%;
-  padding:14px;
+  padding:16px;
   border:none;
-  border-radius:14px;
-  font-size:16px;
+  border-radius:16px;
+  font-size:18px;
   font-weight:700;
-  background:linear-gradient(135deg,var(--primary),#6f7fc1);
+  background:linear-gradient(135deg,#667eea,#764ba2);
   color:white;
   cursor:pointer;
+  transition:all .3s ease;
+  box-shadow:0 8px 20px rgba(102,126,234,.4);
 }
 
-#error{color:#c0392b}
+button:hover{
+  transform:translateY(-2px);
+  box-shadow:0 12px 28px rgba(102,126,234,.5);
+}
+
+button:active{
+  transform:translateY(0);
+}
+
+#error{
+  color:#fee;
+  background:rgba(239,68,68,.9);
+  padding:12px;
+  border-radius:12px;
+  margin-top:15px;
+  text-align:center;
+  font-weight:600;
+  display:none;
+}
+
+#error.show{display:block;animation:shake .5s}
+
+@keyframes shake{
+  0%,100%{transform:translateX(0)}
+  25%{transform:translateX(-10px)}
+  75%{transform:translateX(10px)}
+}
 
 /* SUMMARY */
 .summary{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:15px;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:20px;
 }
 
 .sum-box{
-  background:rgba(255,255,255,.55);
-  border-radius:18px;
-  padding:18px;
+  background:rgba(255,255,255,.85);
+  border-radius:20px;
+  padding:24px;
   text-align:center;
   font-weight:600;
+  transition:all .3s ease;
+  border:2px solid rgba(255,255,255,.5);
+  position:relative;
+  overflow:hidden;
 }
 
-.sum-box span{
+.sum-box::before{
+  content:'';
+  position:absolute;
+  top:-50%;
+  left:-50%;
+  width:200%;
+  height:200%;
+  background:linear-gradient(45deg,transparent,rgba(255,255,255,.3),transparent);
+  transform:rotate(45deg);
+  transition:all .5s;
+}
+
+.sum-box:hover::before{
+  left:100%;
+}
+
+.sum-box:hover{
+  transform:translateY(-5px);
+  box-shadow:0 12px 30px rgba(0,0,0,.15);
+}
+
+.sum-box .icon{
+  font-size:48px;
+  margin-bottom:8px;
   display:block;
-  margin-top:6px;
-  font-size:20px;
+}
+
+.sum-box .name{
+  font-size:18px;
+  color:#555;
+  margin-bottom:8px;
+}
+
+.sum-box .amount{
+  display:block;
+  margin-top:10px;
+  font-size:26px;
   font-weight:800;
+  background:linear-gradient(135deg,#667eea,#764ba2);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+
+.sum-box.total{
+  background:linear-gradient(135deg,rgba(102,126,234,.9),rgba(118,75,162,.9));
+  color:#fff;
+  border-color:rgba(255,255,255,.6);
+}
+
+.sum-box.total .name{color:#fff}
+.sum-box.total .amount{
+  -webkit-text-fill-color:#fff;
+  text-shadow:2px 2px 4px rgba(0,0,0,.2);
 }
 
 /* TABLE */
+.table-wrapper{
+  overflow-x:auto;
+  border-radius:16px;
+  background:rgba(255,255,255,.9);
+  padding:8px;
+}
+
 table{
   width:100%;
   border-collapse:collapse;
-  margin-top:15px;
-  font-size:14px;
+  font-size:15px;
 }
 
 th,td{
-  padding:10px;
-  border-bottom:1px solid rgba(0,0,0,.1);
+  padding:14px 10px;
   text-align:center;
 }
 
-th{
-  background:rgba(255,255,255,.6);
+thead{
+  background:linear-gradient(135deg,#667eea,#764ba2);
+  color:#fff;
+}
+
+thead th{
+  font-weight:700;
+  text-transform:uppercase;
+  font-size:13px;
+  letter-spacing:.5px;
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+
+tbody tr{
+  border-bottom:1px solid rgba(0,0,0,.08);
+  transition:background .2s;
+}
+
+tbody tr:hover{
+  background:rgba(102,126,234,.08);
 }
 
 .month-row td{
-  background:rgba(143,155,198,.35);
-  font-weight:bold;
+  background:linear-gradient(135deg,rgba(102,126,234,.25),rgba(118,75,162,.25));
+  font-weight:800;
   text-align:left;
+  padding:16px;
+  font-size:16px;
+  color:#555;
+  border-top:2px solid rgba(102,126,234,.3);
+  border-bottom:2px solid rgba(102,126,234,.3);
 }
 
+/* Custom Checkbox */
 input[type="checkbox"]{
-  transform:scale(1.4);
+  width:24px;
+  height:24px;
+  cursor:pointer;
+  position:relative;
+  appearance:none;
+  -webkit-appearance:none;
+  border:2px solid #ccc;
+  border-radius:6px;
+  background:#fff;
+  transition:all .3s ease;
+  outline:none;
+}
+
+input[type="checkbox"]:checked{
+  background:linear-gradient(135deg,#667eea,#764ba2);
+  border-color:#667eea;
+}
+
+input[type="checkbox"]:checked::after{
+  content:'✓';
+  position:absolute;
+  color:#fff;
+  font-size:16px;
+  font-weight:bold;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+}
+
+input[type="checkbox"]:hover{
+  border-color:#667eea;
+  transform:scale(1.1);
+}
+
+/* PROGRESS BAR */
+.progress-section{
+  margin-top:15px;
+  padding:20px;
+  background:rgba(255,255,255,.6);
+  border-radius:16px;
+}
+
+.progress-bar{
+  height:12px;
+  background:rgba(0,0,0,.1);
+  border-radius:10px;
+  overflow:hidden;
+  margin-top:10px;
+}
+
+.progress-fill{
+  height:100%;
+  background:linear-gradient(90deg,#667eea,#764ba2,#f093fb);
+  border-radius:10px;
+  transition:width .5s ease;
+  box-shadow:0 2px 8px rgba(102,126,234,.4);
+}
+
+.progress-text{
+  text-align:center;
+  margin-top:8px;
+  font-weight:700;
+  color:#555;
 }
 
 /* MOBILE */
 @media(max-width:600px){
-  body{background-size:180px,cover}
+  body{padding:15px}
+  h1{font-size:28px}
+  .card{padding:20px}
+  .sum-box{padding:18px}
+  .sum-box .icon{font-size:40px}
+  .sum-box .amount{font-size:22px}
+  table{font-size:13px}
+  th,td{padding:10px 6px}
 }
 </style>
 </head>
@@ -150,9 +395,11 @@ input[type="checkbox"]{
 <!-- LOGIN -->
 <div class="card" id="loginBox">
   <h1>🏖️ Tabungan Liburan</h1>
-  <p>Masukkan password</p>
-  <input type="password" id="password" placeholder="joni / mona">
-  <button onclick="login()">Login</button>
+  <p>Masukkan password untuk melanjutkan</p>
+  <div class="input-group">
+    <input type="password" id="password" placeholder="Masukkan password">
+  </div>
+  <button onclick="login()">🔓 Login</button>
   <div id="error"></div>
 </div>
 
@@ -161,25 +408,50 @@ input[type="checkbox"]{
 
   <!-- SUMMARY -->
   <div class="card summary">
-    <div class="sum-box">👤 Joni<span id="joniTotal">Rp 0</span></div>
-    <div class="sum-box">👤 Mona<span id="monaTotal">Rp 0</span></div>
-    <div class="sum-box">💰 Total<span id="allTotal">Rp 0</span></div>
+    <div class="sum-box">
+      <span class="icon">👨</span>
+      <div class="name">Joni</div>
+      <span class="amount" id="joniTotal">Rp 0</span>
+    </div>
+    <div class="sum-box">
+      <span class="icon">👩</span>
+      <div class="name">Mona</div>
+      <span class="amount" id="monaTotal">Rp 0</span>
+    </div>
+    <div class="sum-box total">
+      <span class="icon">💰</span>
+      <div class="name">Total Tabungan</div>
+      <span class="amount" id="allTotal">Rp 0</span>
+    </div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="card">
+    <h2>📊 Progress Menabung</h2>
+    <div class="progress-section">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressBar"></div>
+      </div>
+      <div class="progress-text" id="progressText">0% tercapai</div>
+    </div>
   </div>
 
   <!-- TABLE -->
   <div class="card">
-    <h2>📅 Tabungan Harian</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Tanggal</th>
-          <th>Hari</th>
-          <th>Joni</th>
-          <th>Mona</th>
-        </tr>
-      </thead>
-      <tbody id="tabel"></tbody>
-    </table>
+    <h2>📅 Catatan Tabungan Harian</h2>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Tanggal</th>
+            <th>Hari</th>
+            <th>👨 Joni</th>
+            <th>👩 Mona</th>
+          </tr>
+        </thead>
+        <tbody id="tabel"></tbody>
+      </table>
+    </div>
   </div>
 
 </div>
@@ -196,8 +468,21 @@ const akhir=new Date("2026-03-20");
 const hari=d=>d.toLocaleDateString("id-ID",{weekday:"long"});
 const bulan=d=>d.toLocaleDateString("id-ID",{month:"long",year:"numeric"});
 
+// Calculate total days
+const totalDays = Math.ceil((akhir - mulai) / (1000 * 60 * 60 * 24)) + 1;
+const targetTotal = totalDays * PER_HARI * 2; // 2 people
+
 async function login(){
-  TOKEN=password.value;
+  const errorEl = document.getElementById('error');
+  TOKEN=password.value.trim().toLowerCase();
+  
+  if(!TOKEN){
+    errorEl.textContent="⚠️ Password tidak boleh kosong";
+    errorEl.classList.add('show');
+    setTimeout(()=>errorEl.classList.remove('show'),3000);
+    return;
+  }
+  
   try{
     const r=await fetch(WORKER_URL,{headers:{Authorization:`Bearer ${TOKEN}`}});
     if(!r.ok) throw 0;
@@ -205,18 +490,31 @@ async function login(){
     loginBox.style.display="none";
     app.style.display="block";
     render();
-  }catch{ error.textContent="Password salah"; }
+  }catch{
+    errorEl.textContent="❌ Password salah! Silakan coba lagi.";
+    errorEl.classList.add('show');
+    setTimeout(()=>errorEl.classList.remove('show'),3000);
+  }
 }
 
+// Allow Enter key to login
+password.addEventListener('keypress', (e)=>{
+  if(e.key==='Enter') login();
+});
+
 async function save(){
-  await fetch(WORKER_URL,{
-    method:"POST",
-    headers:{
-      "Content-Type":"application/json",
-      Authorization:`Bearer ${TOKEN}`
-    },
-    body:JSON.stringify(data)
-  });
+  try{
+    await fetch(WORKER_URL,{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+        Authorization:`Bearer ${TOKEN}`
+      },
+      body:JSON.stringify(data)
+    });
+  }catch(err){
+    console.error('Save error:',err);
+  }
 }
 
 function render(){
@@ -247,9 +545,16 @@ function render(){
       </tr>`;
   }
 
+  // Update totals
   joniTotal.textContent="Rp "+tj.toLocaleString("id-ID");
   monaTotal.textContent="Rp "+tm.toLocaleString("id-ID");
-  allTotal.textContent="Rp "+(tj+tm).toLocaleString("id-ID");
+  const total = tj + tm;
+  allTotal.textContent="Rp "+total.toLocaleString("id-ID");
+  
+  // Update progress
+  const percentage = Math.round((total / targetTotal) * 100);
+  progressBar.style.width = percentage + "%";
+  progressText.textContent = percentage + "% tercapai dari target Rp " + targetTotal.toLocaleString("id-ID");
 }
 
 async function toggle(t,n){
