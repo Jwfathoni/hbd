@@ -2,84 +2,80 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Tabungan Lebaran 2026</title>
+<title>Tabungan Liburan</title>
 
 <style>
 body{
   font-family: Arial, sans-serif;
-  background: linear-gradient(135deg,#1d2671,#c33764);
+  background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
   color:#fff;
-  margin:0;
   padding:20px;
 }
-.container{max-width:1000px;margin:auto}
-h1{text-align:center}
+.container{max-width:900px;margin:auto}
 .card{
   background:rgba(255,255,255,0.15);
   padding:20px;
   border-radius:15px;
   margin-bottom:20px;
 }
-.summary{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:15px;
+h1{text-align:center}
+input,button{
+  padding:10px;
+  border-radius:8px;
+  border:none;
 }
-.summary div{text-align:center;font-size:18px}
-.summary span{font-size:24px;font-weight:bold}
+button{cursor:pointer;font-weight:bold}
 table{width:100%;border-collapse:collapse}
 th,td{
   border:1px solid rgba(255,255,255,0.3);
   padding:8px;
   text-align:center;
 }
-th{background:rgba(0,0,0,0.3)}
 .month-row{
-  background:rgba(0,0,0,0.45);
+  background:rgba(0,0,0,0.4);
   font-weight:bold;
 }
-input[type="checkbox"]{transform:scale(1.3)}
 </style>
 </head>
 
 <body>
 <div class="container">
 
-<h1>💰 Tabungan Lebaran 2026</h1>
-<p style="text-align:center">Rp10.000 / orang / hari</p>
-
-<div class="card summary">
-  <div>Joni<br>Rp <span id="joni">0</span></div>
-  <div>Mona<br>Rp <span id="mona">0</span></div>
-  <div>Total<br>Rp <span id="total">0</span></div>
+<!-- LOGIN -->
+<div class="card" id="loginBox">
+  <h1>🔐 Login Tabungan Liburan</h1>
+  <p>Password: <b>joni</b> atau <b>mona</b></p>
+  <input type="password" id="password" placeholder="Masukkan password">
+  <button onclick="login()">Login</button>
+  <p id="error" style="color:#ff5252"></p>
 </div>
 
-<div class="card">
-<table>
-<thead>
-<tr>
-<th>Tanggal</th>
-<th>Hari</th>
-<th>Joni</th>
-<th>Mona</th>
-</tr>
-</thead>
-<tbody id="tabel"></tbody>
-</table>
+<!-- APP -->
+<div class="card" id="app" style="display:none">
+  <h1>🏖️ Tabungan Liburan</h1>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Tanggal</th>
+        <th>Hari</th>
+        <th>Joni</th>
+        <th>Mona</th>
+      </tr>
+    </thead>
+    <tbody id="tabel"></tbody>
+  </table>
 </div>
 
 </div>
 
 <script>
 const WORKER_URL = "https://tabunngan.joniwijayaf888.workers.dev/";
-const TOKEN = "TABUNGAN2026";
+let TOKEN = "";
 
 const mulai = new Date("2025-12-26");
 const akhir = new Date("2026-03-20");
-const perHari = 10000;
-
 let data = {};
-const tbody = document.getElementById("tabel");
 
 function namaHari(d){
   return d.toLocaleDateString("id-ID",{weekday:"long"});
@@ -88,15 +84,29 @@ function namaBulan(d){
   return d.toLocaleDateString("id-ID",{month:"long",year:"numeric"});
 }
 
-// LOAD DATA DARI WORKER
-async function loadData(){
-  const res = await fetch(WORKER_URL,{
-    headers:{ Authorization:`Bearer ${TOKEN}` }
-  });
-  return await res.json();
+// ===== LOGIN =====
+async function login(){
+  const pass = document.getElementById("password").value;
+  TOKEN = pass;
+
+  try{
+    const res = await fetch(WORKER_URL,{
+      headers:{ Authorization:`Bearer ${TOKEN}` }
+    });
+
+    if(!res.ok) throw "fail";
+
+    document.getElementById("loginBox").style.display="none";
+    document.getElementById("app").style.display="block";
+
+    data = await res.json();
+    render();
+  }catch{
+    document.getElementById("error").textContent="Password salah!";
+  }
 }
 
-// SAVE DATA KE WORKER
+// ===== SAVE =====
 async function saveData(){
   await fetch(WORKER_URL,{
     method:"POST",
@@ -109,16 +119,17 @@ async function saveData(){
 }
 
 function render(){
+  const tbody = document.getElementById("tabel");
   tbody.innerHTML="";
-  let totalJ=0,totalM=0,lastMonth="";
+  let lastMonth="";
 
   for(let d=new Date(mulai); d<=akhir; d.setDate(d.getDate()+1)){
     const t = d.toISOString().split("T")[0];
     const bulan = namaBulan(d);
 
-    if(bulan !== lastMonth){
+    if(bulan!==lastMonth){
       tbody.innerHTML += `<tr class="month-row"><td colspan="4">📆 ${bulan}</td></tr>`;
-      lastMonth = bulan;
+      lastMonth=bulan;
     }
 
     if(!data[t]) data[t]={joni:false,mona:false};
@@ -133,27 +144,14 @@ function render(){
             onchange="toggle('${t}','mona')"></td>
       </tr>
     `;
-
-    if(data[t].joni) totalJ+=perHari;
-    if(data[t].mona) totalM+=perHari;
   }
-
-  joni.textContent = totalJ.toLocaleString("id-ID");
-  mona.textContent = totalM.toLocaleString("id-ID");
-  total.textContent = (totalJ+totalM).toLocaleString("id-ID");
 }
 
 async function toggle(t,n){
-  data[t][n] = !data[t][n];
+  data[t][n]=!data[t][n];
   render();
   await saveData();
 }
-
-// INIT
-(async ()=>{
-  data = await loadData();
-  render();
-})();
 </script>
 
 </body>
